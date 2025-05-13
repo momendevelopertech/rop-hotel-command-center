@@ -12,6 +12,17 @@ interface RecentReportsProps {
 export function RecentReports({ reports }: RecentReportsProps) {
   const navigate = useNavigate();
   
+  // Get report statistics
+  const financialReports = reports.filter(r => r.type.includes('Financial')).length;
+  const occupancyReports = reports.filter(r => r.type.includes('Occupancy')).length;
+  const inventoryReports = reports.filter(r => r.type.includes('Inventory')).length;
+  const securityReports = reports.filter(r => r.type.includes('Security')).length;
+  
+  // Sort reports by date (newest first)
+  const sortedReports = [...reports].sort((a, b) => 
+    new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+  
   return (
     <div className="mt-8">
       <div className="flex justify-between items-center mb-4">
@@ -24,6 +35,26 @@ export function RecentReports({ reports }: RecentReportsProps) {
           View All
         </Button>
       </div>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 mb-4">
+        <div className="bg-gray-50 rounded p-2 text-xs flex flex-col items-center">
+          <span className="text-gray-600">Financial</span>
+          <span className="text-blue-700 font-bold text-lg">{financialReports}</span>
+        </div>
+        <div className="bg-gray-50 rounded p-2 text-xs flex flex-col items-center">
+          <span className="text-gray-600">Occupancy</span>
+          <span className="text-blue-700 font-bold text-lg">{occupancyReports}</span>
+        </div>
+        <div className="bg-gray-50 rounded p-2 text-xs flex flex-col items-center">
+          <span className="text-gray-600">Inventory</span>
+          <span className="text-blue-700 font-bold text-lg">{inventoryReports}</span>
+        </div>
+        <div className="bg-gray-50 rounded p-2 text-xs flex flex-col items-center">
+          <span className="text-gray-600">Security</span>
+          <span className="text-blue-700 font-bold text-lg">{securityReports}</span>
+        </div>
+      </div>
+      
       <Card>
         <div className="overflow-x-auto">
           <table className="rop-table">
@@ -36,13 +67,16 @@ export function RecentReports({ reports }: RecentReportsProps) {
               </tr>
             </thead>
             <tbody>
-              {reports.slice(0, 5).map((report) => (
+              {sortedReports.slice(0, 5).map((report) => (
                 <tr key={report.id}>
                   <td className="font-medium">{report.type}</td>
                   <td>{report.date}</td>
                   <td>{report.generatedBy}</td>
                   <td>
-                    <Button variant="ghost" size="sm">View</Button>
+                    <div className="flex space-x-2">
+                      <Button variant="ghost" size="sm">View</Button>
+                      <Button variant="outline" size="sm" className="text-xs">Export</Button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -50,6 +84,10 @@ export function RecentReports({ reports }: RecentReportsProps) {
           </table>
         </div>
       </Card>
+      
+      <div className="mt-3 text-xs text-gray-500 flex justify-end">
+        <p>Military-grade reports with full compliance to ROP regulations</p>
+      </div>
     </div>
   );
 }

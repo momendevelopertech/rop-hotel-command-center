@@ -26,12 +26,14 @@ export function SecondaryStats({
         value={pendingRenewals} 
         icon={<UserRound className="h-6 w-6" />}
         onClick={() => navigate('/membership')}
+        description="Officer memberships requiring renewal"
       />
       <StatCard 
         title="Employees" 
         value={employeeCount} 
         icon={<Users className="h-6 w-6" />}
         onClick={() => navigate('/hr')}
+        description="Staff across all hotel departments"
       />
       <StatCard 
         title="Low Stock Items" 
@@ -39,6 +41,7 @@ export function SecondaryStats({
         icon={<Database className="h-6 w-6" />}
         trend={{ value: 3, isUpward: true }}
         onClick={() => navigate('/inventory')}
+        description="Inventory items requiring restock"
       />
       <StatCard 
         title="Mobile App Users" 
@@ -46,6 +49,7 @@ export function SecondaryStats({
         icon={<Smartphone className="h-6 w-6" />}
         trend={{ value: 15, isUpward: true }}
         onClick={() => navigate('/mobile-app')}
+        description="Active users on the ROP mobile platform"
       />
     </div>
   );

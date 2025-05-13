@@ -27,6 +27,7 @@ export function PrimaryStats({
         icon={<Bed className="h-6 w-6" />}
         trend={{ value: 12, isUpward: true }}
         onClick={() => navigate('/guest-management')}
+        description="Military personnel currently accommodated"
       />
       <StatCard 
         title="Pending Orders" 
@@ -34,12 +35,14 @@ export function PrimaryStats({
         icon={<Utensils className="h-6 w-6" />}
         trend={{ value: 5, isUpward: false }}
         onClick={() => navigate('/dining')}
+        description="Mess hall and catering orders in process"
       />
       <StatCard 
         title="Upcoming Events" 
         value={upcomingEvents} 
         icon={<CalendarDays className="h-6 w-6" />}
         onClick={() => navigate('/events')}
+        description="Scheduled events and trainings"
       />
       <StatCard 
         title="Monthly Revenue" 
@@ -47,6 +50,7 @@ export function PrimaryStats({
         icon={<FileBarChart className="h-6 w-6" />}
         trend={{ value: 8, isUpward: true }}
         onClick={() => navigate('/finance')}
+        description="Total revenue from all departments"
       />
     </div>
   );

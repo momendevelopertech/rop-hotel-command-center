@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { DataTable } from '@/components/shared/DataTable';
@@ -107,7 +108,7 @@ const GuestManagement = () => {
       <DataTable 
         data={bookings}
         columns={columns}
-        searchPlaceholder="Search bookings..."
+        title="Guest Bookings"
         searchField="name"
       />
       

@@ -11,11 +11,20 @@ interface StatCardProps {
     value: number;
     isUpward: boolean;
   };
+  description?: string;
   className?: string;
   onClick?: () => void;
 }
 
-export function StatCard({ title, value, icon, trend, className, onClick }: StatCardProps) {
+export function StatCard({ 
+  title, 
+  value, 
+  icon, 
+  trend, 
+  description,
+  className, 
+  onClick 
+}: StatCardProps) {
   return (
     <Card 
       className={cn(
@@ -48,6 +57,10 @@ export function StatCard({ title, value, icon, trend, className, onClick }: Stat
                 {trend.value}%
               </span>
             </div>
+          )}
+          
+          {description && (
+            <p className="text-xs text-gray-500 mt-2 line-clamp-2">{description}</p>
           )}
         </div>
         

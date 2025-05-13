@@ -26,6 +26,12 @@ export function MembershipChart({ memberships }: MembershipChartProps) {
       return acc;
     }, {} as Record<string, number>);
 
+    // Count memberships by rank
+    const membershipsByRank = memberships.reduce((acc, member) => {
+      acc[member.rank] = (acc[member.rank] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+
     const statuses = Object.keys(membershipsByStatus);
     const data = statuses.map(status => membershipsByStatus[status]);
     const colors = ['#1E3A8A', '#3B82F6', '#93C5FD', '#BFDBFE'];
@@ -49,6 +55,16 @@ export function MembershipChart({ memberships }: MembershipChartProps) {
             labels: {
               boxWidth: 12
             }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const label = context.label || '';
+                const value = context.raw as number;
+                const percentage = Math.round((value / memberships.length) * 100);
+                return `${label}: ${value} (${percentage}%)`;
+              }
+            }
           }
         }
       }
@@ -59,6 +75,19 @@ export function MembershipChart({ memberships }: MembershipChartProps) {
     };
   }, [memberships]);
 
+  // Calculate membership statistics
+  const activeMembers = memberships.filter(m => m.status === "Active").length;
+  const pendingRenewals = memberships.filter(m => m.status === "Pending Renewal").length;
+  const expiredMembers = memberships.filter(m => m.status === "Expired").length;
+  
+  // Calculate memberships by rank
+  const cadetMembers = memberships.filter(m => m.rank === "Cadet").length;
+  const officerMembers = memberships.filter(m => m.rank === "Officer").length;
+  const commandMembers = memberships.filter(m => m.rank === "Command").length;
+  
+  // Calculate renewal rate
+  const renewalRate = Math.round((activeMembers / memberships.length) * 100);
+
   return (
     <ChartCard 
       title="Membership Status" 
@@ -68,6 +97,42 @@ export function MembershipChart({ memberships }: MembershipChartProps) {
         </Button>
       }
     >
+      <div className="mb-3 grid grid-cols-2 gap-2 text-xs">
+        <div className="flex items-center justify-between p-2 bg-green-50 rounded">
+          <span className="font-medium">Active:</span> 
+          <span className="text-green-700">{activeMembers}</span>
+        </div>
+        <div className="flex items-center justify-between p-2 bg-yellow-50 rounded">
+          <span className="font-medium">Pending Renewal:</span> 
+          <span className="text-yellow-700">{pendingRenewals}</span>
+        </div>
+        <div className="flex items-center justify-between p-2 bg-red-50 rounded">
+          <span className="font-medium">Expired:</span> 
+          <span className="text-red-700">{expiredMembers}</span>
+        </div>
+        <div className="flex items-center justify-between p-2 bg-blue-50 rounded">
+          <span className="font-medium">Renewal Rate:</span> 
+          <span className="text-blue-700">{renewalRate}%</span>
+        </div>
+      </div>
+      
+      <div className="mb-3 flex justify-end text-xs">
+        <div className="flex space-x-3 p-2 bg-gray-50 rounded">
+          <div className="flex items-center">
+            <div className="w-2 h-2 bg-blue-900 rounded-full mr-1"></div>
+            <span>Cadet: {cadetMembers}</span>
+          </div>
+          <div className="flex items-center">
+            <div className="w-2 h-2 bg-blue-600 rounded-full mr-1"></div>
+            <span>Officer: {officerMembers}</span>
+          </div>
+          <div className="flex items-center">
+            <div className="w-2 h-2 bg-blue-300 rounded-full mr-1"></div>
+            <span>Command: {commandMembers}</span>
+          </div>
+        </div>
+      </div>
+      
       <canvas ref={chartRef}></canvas>
     </ChartCard>
   );

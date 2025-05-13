@@ -12,12 +12,12 @@ interface ChartCardProps {
 
 export function ChartCard({ title, children, className, actions }: ChartCardProps) {
   return (
-    <Card className={cn("p-5", className)}>
+    <Card className={cn("p-5 hover:shadow-md transition-all duration-300", className)}>
       <div className="flex justify-between items-center mb-4">
         <h3 className="font-medium text-gray-700">{title}</h3>
         {actions && <div>{actions}</div>}
       </div>
-      <div className="w-full h-[240px]">
+      <div className="w-full">
         {children}
       </div>
     </Card>
