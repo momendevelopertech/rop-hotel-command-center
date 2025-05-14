@@ -1,10 +1,23 @@
 
-import React, { useEffect, useRef } from 'react';
-import { ChartJS } from '@/utils/chartUtils';
+import React from 'react';
 import { Transaction } from '@/contexts/DataContext';
 import { ChartCard } from './ChartCard';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { 
+  LineChart, 
+  Line, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer, 
+  Legend,
+  Area
+} from 'recharts';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
 
 interface RevenueChartProps {
   transactions: Transaction[];
@@ -12,83 +25,27 @@ interface RevenueChartProps {
 
 export function RevenueChart({ transactions }: RevenueChartProps) {
   const navigate = useNavigate();
-  const chartRef = useRef<HTMLCanvasElement | null>(null);
+  const { t } = useLanguage();
 
-  useEffect(() => {
-    if (!chartRef.current) return;
-    
-    const ctx = chartRef.current.getContext('2d');
-    if (!ctx) return;
+  // Group transactions by month
+  const revenueByMonth = transactions.reduce((acc, transaction) => {
+    const month = new Date(transaction.date).getMonth();
+    acc[month] = (acc[month] || 0) + transaction.amount;
+    return acc;
+  }, {} as Record<number, number>);
 
-    // Group transactions by month
-    const revenueByMonth = transactions.reduce((acc, transaction) => {
-      const month = new Date(transaction.date).getMonth();
-      acc[month] = (acc[month] || 0) + transaction.amount;
-      return acc;
-    }, {} as Record<number, number>);
+  // Group transactions by department for analysis
+  const revenueByDepartment = transactions.reduce((acc, transaction) => {
+    acc[transaction.department] = (acc[transaction.department] || 0) + transaction.amount;
+    return acc;
+  }, {} as Record<string, number>);
 
-    // Group transactions by department for analysis
-    const revenueByDepartment = transactions.reduce((acc, transaction) => {
-      acc[transaction.department] = (acc[transaction.department] || 0) + transaction.amount;
-      return acc;
-    }, {} as Record<string, number>);
-
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const data = months.map((_, idx) => revenueByMonth[idx] || 0);
-
-    const chart = new ChartJS(ctx, {
-      type: 'line',
-      data: {
-        labels: months,
-        datasets: [{
-          label: 'Revenue (OMR)',
-          data: data,
-          fill: true,
-          backgroundColor: 'rgba(30, 58, 138, 0.1)',
-          borderColor: '#1E3A8A',
-          tension: 0.4
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false
-          },
-          tooltip: {
-            callbacks: {
-              label: function(context) {
-                return `Revenue: ${context.raw} OMR`;
-              },
-              footer: function() {
-                return `Total Revenue: ${transactions.reduce((sum, t) => sum + t.amount, 0)} OMR`;
-              }
-            }
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Revenue (OMR)'
-            }
-          },
-          x: {
-            title: {
-              display: true,
-              text: 'Month'
-            }
-          }
-        }
-      }
-    });
-
-    return () => {
-      chart.destroy();
-    };
-  }, [transactions]);
+  // Prepare data for Recharts
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const chartData = months.map((name, idx) => ({
+    name,
+    revenue: revenueByMonth[idx] || 0,
+  }));
 
   // Calculate revenue statistics
   const totalRevenue = transactions.reduce((sum, t) => sum + t.amount, 0);
@@ -109,36 +66,94 @@ export function RevenueChart({ transactions }: RevenueChartProps) {
     .sort(([, amountA], [, amountB]) => amountB - amountA)
     .slice(0, 2);
 
+  // Chart config for proper styling
+  const chartConfig = {
+    revenue: {
+      label: "Revenue",
+      theme: {
+        light: "#1E3A8A", // ROP blue
+        dark: "#3B82F6"
+      }
+    }
+  };
+
+  // Custom tooltip component to resolve the type issue
+  const CustomTooltip = (props: any) => {
+    if (!props.active || !props.payload) {
+      return null;
+    }
+    return (
+      <ChartTooltipContent 
+        {...props} 
+        className="bg-white border border-gray-200 shadow-lg"
+      />
+    );
+  };
+
   return (
     <ChartCard 
-      title="Revenue Trends" 
+      title={t("Revenue Trends")} 
       actions={
         <Button variant="outline" size="sm" onClick={() => navigate('/finance')}>
-          View Details
+          {t("View Details")}
         </Button>
       }
     >
       <div className="mb-3 grid grid-cols-3 gap-2 text-xs">
         <div className="col-span-3 flex items-center justify-between p-2 bg-blue-50 rounded">
-          <span className="font-medium">Total Revenue:</span> 
+          <span className="font-medium">{t("Total Revenue")}:</span> 
           <span className="text-blue-700 font-bold">{totalRevenue} OMR</span>
         </div>
         
         {Object.entries(revenueByType).slice(0, 2).map(([type, amount], index) => (
           <div key={type} className="flex flex-col p-2 bg-gray-50 rounded">
-            <span className="font-medium text-gray-600 truncate">{type}:</span> 
+            <span className="font-medium text-gray-600 truncate">{t(type)}:</span> 
             <span className="text-gray-800 font-semibold">{amount} OMR</span>
           </div>
         ))}
         
         {topDepartments.map(([dept, amount], index) => (
           <div key={dept} className="flex flex-col p-2 bg-gray-50 rounded">
-            <span className="font-medium text-gray-600 truncate">{dept}:</span> 
+            <span className="font-medium text-gray-600 truncate">{t(dept)}:</span> 
             <span className="text-gray-800 font-semibold">{amount} OMR</span>
           </div>
         ))}
       </div>
-      <canvas ref={chartRef}></canvas>
+
+      <AspectRatio ratio={16/9} className="mt-2">
+        <ChartContainer config={chartConfig} className="w-full h-full">
+          <LineChart data={chartData}>
+            <defs>
+              <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#1E3A8A" stopOpacity={0.1}/>
+                <stop offset="95%" stopColor="#1E3A8A" stopOpacity={0.01}/>
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip content={<CustomTooltip />} />
+            <Legend />
+            <Area 
+              type="monotone" 
+              dataKey="revenue" 
+              name={t("Revenue (OMR)")} 
+              stroke="var(--color-revenue, #1E3A8A)" 
+              fillOpacity={1} 
+              fill="url(#revenueGradient)" 
+            />
+            <Line 
+              type="monotone" 
+              dataKey="revenue" 
+              name={t("Revenue (OMR)")} 
+              stroke="var(--color-revenue, #1E3A8A)"
+              strokeWidth={2}
+              dot={{ r: 3 }}
+              activeDot={{ r: 5 }}
+            />
+          </LineChart>
+        </ChartContainer>
+      </AspectRatio>
     </ChartCard>
   );
 }
