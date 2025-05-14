@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { LanguageToggle } from "@/components/shared/LanguageToggle";
 
 interface TopBarProps {
   sidebarOpen: boolean;
@@ -42,6 +43,8 @@ export function TopBar({ sidebarOpen, setSidebarOpen }: TopBarProps) {
         </div>
 
         <div className="flex items-center space-x-3">
+          <LanguageToggle />
+          
           <button className="p-2 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 relative">
             <Bell className="h-5 w-5" />
             <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>

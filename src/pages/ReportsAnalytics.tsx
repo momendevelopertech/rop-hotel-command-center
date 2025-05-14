@@ -10,8 +10,8 @@ export default function ReportsAnalytics() {
   return (
     <AppLayout>
       <PageHeader 
-        title="التقارير والتحليلات" 
-        subtitle="إنشاء وعرض التقارير التحليلية"
+        title="Reports & Analytics" 
+        subtitle="Create and view analytical reports"
       />
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
