@@ -2,6 +2,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/contexts/LanguageContext";
 import {
   LayoutDashboard,
   Users,
@@ -27,18 +28,19 @@ type NavItem = {
 
 export function Sidebar({ open }: SidebarProps) {
   const location = useLocation();
+  const { t } = useLanguage();
   
   const navItems: NavItem[] = [
-    { title: "Dashboard", href: "/", icon: LayoutDashboard },
-    { title: "Guest Management", href: "/guest-management", icon: Bed },
-    { title: "Dining & Catering", href: "/dining", icon: Utensils },
-    { title: "Event Management", href: "/events", icon: CalendarDays },
-    { title: "Finance & Reports", href: "/finance", icon: FileBarChart },
-    { title: "Mobile App", href: "/mobile-app", icon: Smartphone },
-    { title: "Membership", href: "/membership", icon: UserRound },
-    { title: "Human Resources", href: "/hr", icon: Users },
-    { title: "Inventory", href: "/inventory", icon: Database },
-    { title: "Reports & Analytics", href: "/reports", icon: FileText },
+    { title: t("Dashboard"), href: "/", icon: LayoutDashboard },
+    { title: t("Guest Management"), href: "/guest-management", icon: Bed },
+    { title: t("Dining & Catering"), href: "/dining", icon: Utensils },
+    { title: t("Event Management"), href: "/events", icon: CalendarDays },
+    { title: t("Finance & Reports"), href: "/finance", icon: FileBarChart },
+    { title: t("Mobile App"), href: "/mobile-app", icon: Smartphone },
+    { title: t("Membership"), href: "/membership", icon: UserRound },
+    { title: t("Human Resources"), href: "/hr", icon: Users },
+    { title: t("Inventory"), href: "/inventory", icon: Database },
+    { title: t("Reports & Analytics"), href: "/reports", icon: FileText },
   ];
 
   return (
@@ -60,7 +62,7 @@ export function Sidebar({ open }: SidebarProps) {
                 )}
               >
                 <item.icon className="h-5 w-5 min-w-5" />
-                {open && <span className="ml-3">{item.title}</span>}
+                {open && <span className="ms-3">{item.title}</span>}
               </Link>
             </li>
           ))}

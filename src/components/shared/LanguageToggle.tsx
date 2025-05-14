@@ -2,14 +2,15 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { OmanFlag } from "./OmanFlag";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function LanguageToggle() {
-  const [language, setLanguage] = React.useState("en");
+  const { language, setLanguage, t } = useLanguage();
 
   const toggleLanguage = () => {
-    setLanguage(language === "en" ? "ar" : "en");
-    // In a real application, this would trigger a language change throughout the app
-    console.log("Language changed to:", language === "en" ? "ar" : "en");
+    const newLanguage = language === "en" ? "ar" : "en";
+    setLanguage(newLanguage);
+    console.log("Language changed to:", newLanguage);
   };
 
   return (
@@ -20,7 +21,7 @@ export function LanguageToggle() {
       onClick={toggleLanguage}
     >
       <OmanFlag className="h-4 w-6" />
-      {language === "en" ? "Change to Arabic" : "Change to English"}
+      {language === "en" ? t("Change to Arabic") : t("Change to English")}
     </Button>
   );
 }

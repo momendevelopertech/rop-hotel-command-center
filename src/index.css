@@ -2,176 +2,144 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+ 
 @layer base {
   :root {
+    --rop-blue: 223 65% 33%; /* #1E3A8A */
+    --rop-gold: 38 96% 56%; /* #FBBF24 */
+    --rop-lightGray: 210 20% 96%; /* #F1F5F9 */
+    
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
-
+ 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-
+ 
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
+ 
+    --primary: var(--rop-blue);
     --primary-foreground: 210 40% 98%;
-
+ 
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
-
+ 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-
+ 
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
-
+ 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
-
+ 
     --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
   }
-
+ 
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-
+ 
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
-
+ 
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-
+ 
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
-
+ 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
-
+ 
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-
+ 
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
-
+ 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-
+ 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
-
+ 
 @layer base {
   * {
     @apply border-border;
   }
-
   body {
     @apply bg-background text-foreground;
   }
 }
 
-@layer utilities {
-  .rop-card {
-    @apply bg-white rounded-lg shadow-lg p-5 border border-gray-200 hover:shadow-xl transition-shadow duration-300;
-  }
-  
-  .rop-table-container {
-    @apply w-full overflow-x-auto rounded-lg border border-gray-200;
-  }
-  
-  .rop-table {
-    @apply min-w-full divide-y divide-gray-200;
-  }
-  
-  .rop-table thead {
-    @apply bg-rop-blue text-white;
-  }
-  
-  .rop-table th {
-    @apply px-6 py-3 text-left text-xs font-medium uppercase tracking-wider;
-  }
-  
-  .rop-table tbody {
-    @apply bg-white divide-y divide-gray-200;
-  }
-  
-  .rop-table td {
-    @apply px-6 py-4 whitespace-nowrap text-sm;
-  }
-  
-  .rop-badge {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
-  }
-  
-  .rop-badge-blue {
-    @apply bg-blue-100 text-blue-800;
-  }
-  
-  .rop-badge-green {
-    @apply bg-green-100 text-green-800;
-  }
-  
-  .rop-badge-red {
-    @apply bg-red-100 text-red-800;
-  }
-  
-  .rop-badge-yellow {
-    @apply bg-yellow-100 text-yellow-800;
-  }
-  
-  .rop-badge-purple {
-    @apply bg-purple-100 text-purple-800;
-  }
-  
-  .rop-form-input {
-    @apply mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-rop-blue focus:border-rop-blue sm:text-sm;
-  }
-  
-  .rop-btn {
-    @apply inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
-  }
-  
-  .rop-btn-primary {
-    @apply bg-rop-blue hover:bg-blue-800 focus:ring-blue-500;
-  }
-  
-  .rop-btn-secondary {
-    @apply bg-gray-500 hover:bg-gray-600 focus:ring-gray-400;
-  }
-  
-  .rop-btn-danger {
-    @apply bg-red-600 hover:bg-red-700 focus:ring-red-500;
-  }
-  
-  .rop-btn-success {
-    @apply bg-green-600 hover:bg-green-700 focus:ring-green-500;
-  }
-  
-  .rop-btn-warning {
-    @apply bg-yellow-600 hover:bg-yellow-700 focus:ring-yellow-500;
-  }
+/* Table styling */
+.rop-table {
+  @apply w-full border-collapse;
+}
+.rop-table th {
+  @apply py-3 px-4 text-start font-medium text-gray-500 border-b;
+}
+.rop-table td {
+  @apply py-3 px-4 border-b border-gray-100;
+}
+
+/* Badge styling */
+.badge {
+  @apply px-2 py-1 text-xs rounded-full;
+}
+.badge-primary {
+  @apply bg-blue-100 text-blue-800;
+}
+.badge-success {
+  @apply bg-green-100 text-green-800;
+}
+.badge-warning {
+  @apply bg-yellow-100 text-yellow-800;
+}
+.badge-danger {
+  @apply bg-red-100 text-red-800;
+}
+
+/* RTL specific overrides */
+.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.rtl .ml-1, .rtl .ml-2, .rtl .ml-3, .rtl .ml-4 {
+  margin-left: 0;
+  margin-right: 0.25rem;
+}
+
+.rtl .mr-1, .rtl .mr-2, .rtl .mr-3, .rtl .mr-4 {
+  margin-right: 0;
+  margin-left: 0.25rem;
+}
+
+.rtl .ms-1, .rtl .ms-2, .rtl .ms-3, .rtl .ms-4 {
+  margin-left: 0;
+  margin-right: 0.25rem;
+}
+
+.rtl .me-1, .rtl .me-2, .rtl .me-3, .rtl .me-4 {
+  margin-right: 0;
+  margin-left: 0.25rem;
+}
+
+/* Animation */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
