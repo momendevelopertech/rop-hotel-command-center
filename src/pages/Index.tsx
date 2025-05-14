@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { useData } from '@/contexts/DataContext';
 import { PrimaryStats } from '@/components/dashboard/PrimaryStats';
@@ -10,31 +10,94 @@ import { MembershipChart } from '@/components/dashboard/MembershipChart';
 import { MobileInteractionsChart } from '@/components/dashboard/MobileInteractionsChart';
 import { RecentReports } from '@/components/dashboard/RecentReports';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useRopDataService } from '@/utils/ropDataService';
 
 const Index = () => {
   const { 
-    bookings, 
-    diningOrders, 
-    events, 
-    transactions, 
-    memberships, 
-    employees, 
-    inventoryItems,
-    mobileInteractions,
-    reports
+    bookings: originalBookings, 
+    diningOrders: originalDiningOrders, 
+    events: originalEvents, 
+    transactions: originalTransactions, 
+    memberships: originalMemberships, 
+    employees: originalEmployees, 
+    inventoryItems: originalInventoryItems,
+    mobileInteractions: originalMobileInteractions,
+    reports: originalReports
   } = useData();
   
   const { t } = useLanguage();
+  const {
+    translateBooking,
+    translateDiningOrder,
+    translateEvent,
+    translateTransaction,
+    translateMembership,
+    translateEmployee,
+    translateInventoryItem,
+    translateMobileInteraction,
+    translateReport
+  } = useRopDataService();
+  
+  const [translatedData, setTranslatedData] = useState({
+    bookings: originalBookings,
+    diningOrders: originalDiningOrders,
+    events: originalEvents,
+    transactions: originalTransactions,
+    memberships: originalMemberships,
+    employees: originalEmployees,
+    inventoryItems: originalInventoryItems,
+    mobileInteractions: originalMobileInteractions,
+    reports: originalReports
+  });
+  
+  // Translate data whenever language changes
+  useEffect(() => {
+    setTranslatedData({
+      bookings: originalBookings.map(translateBooking),
+      diningOrders: originalDiningOrders.map(translateDiningOrder),
+      events: originalEvents.map(translateEvent),
+      transactions: originalTransactions.map(translateTransaction),
+      memberships: originalMemberships.map(translateMembership),
+      employees: originalEmployees.map(translateEmployee),
+      inventoryItems: originalInventoryItems.map(translateInventoryItem),
+      mobileInteractions: originalMobileInteractions.map(translateMobileInteraction),
+      reports: originalReports.map(translateReport)
+    });
+  }, [
+    originalBookings, originalDiningOrders, originalEvents, 
+    originalTransactions, originalMemberships, originalEmployees, 
+    originalInventoryItems, originalMobileInteractions, originalReports,
+    translateBooking, translateDiningOrder, translateEvent,
+    translateTransaction, translateMembership, translateEmployee,
+    translateInventoryItem, translateMobileInteraction, translateReport
+  ]);
   
   // Calculate stats
-  const activeBookings = bookings.filter(b => b.status === "Confirmed" || b.status === "Checked In").length;
-  const pendingOrders = diningOrders.filter(o => o.status === "Placed" || o.status === "Preparing").length;
-  const upcomingEvents = events.filter(e => e.status === "Confirmed" || e.status === "Planned").length;
-  const monthlyRevenue = transactions.reduce((sum, t) => sum + t.amount, 0);
-  const pendingRenewals = memberships.filter(m => m.status === "Pending Renewal").length;
-  const employeeCount = employees.length;
-  const lowStockItems = inventoryItems.filter(i => i.quantity <= i.reorderLevel).length;
-  const mobileAppUsers = new Set(mobileInteractions.map(i => i.officer)).size;
+  const activeBookings = translatedData.bookings.filter(b => 
+    b.status === t("Confirmed") || b.status === t("Checked In")
+  ).length;
+  
+  const pendingOrders = translatedData.diningOrders.filter(o => 
+    o.status === t("Placed") || o.status === t("Preparing")
+  ).length;
+  
+  const upcomingEvents = translatedData.events.filter(e => 
+    e.status === t("Confirmed") || e.status === t("Planned")
+  ).length;
+  
+  const monthlyRevenue = translatedData.transactions.reduce((sum, t) => sum + t.amount, 0);
+  
+  const pendingRenewals = translatedData.memberships.filter(m => 
+    m.status === t("Pending Renewal")
+  ).length;
+  
+  const employeeCount = translatedData.employees.length;
+  
+  const lowStockItems = translatedData.inventoryItems.filter(i => 
+    i.quantity <= i.reorderLevel
+  ).length;
+  
+  const mobileAppUsers = new Set(translatedData.mobileInteractions.map(i => i.officer)).size;
 
   return (
     <AppLayout>
@@ -53,14 +116,14 @@ const Index = () => {
       
       {/* Booking and Revenue Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <BookingChart bookings={bookings} />
-        <RevenueChart transactions={transactions} />
+        <BookingChart bookings={translatedData.bookings} />
+        <RevenueChart transactions={translatedData.transactions} />
       </div>
       
       {/* Membership and Mobile App Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <MembershipChart memberships={memberships} />
-        <MobileInteractionsChart interactions={mobileInteractions} />
+        <MembershipChart memberships={translatedData.memberships} />
+        <MobileInteractionsChart interactions={translatedData.mobileInteractions} />
       </div>
       
       {/* Secondary Stats */}
@@ -72,7 +135,7 @@ const Index = () => {
       />
       
       {/* Recent Reports */}
-      <RecentReports reports={reports} />
+      <RecentReports reports={translatedData.reports} />
     </AppLayout>
   );
 };

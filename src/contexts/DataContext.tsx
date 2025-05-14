@@ -2,6 +2,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { generateMockData } from "@/utils/mockData";
+import { useRopDataService } from "@/utils/ropDataService";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Define types for our data
 export type OfficerRank = "Cadet" | "Officer" | "Command";
@@ -115,9 +117,11 @@ export interface DataContextType {
   resetMockData: () => void;
 }
 
-export const DataContext = createContext<DataContextType>({} as DataContextType);
+// Create the context with a default value
+const DataContext = createContext<DataContextType>({} as DataContextType);
 
-export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+// The DataProvider with language-aware translations
+export const DataProvider = ({ children }: { children: React.ReactNode }) => {
   // Use local storage to persist data
   const [bookings, setBookings] = useLocalStorage<Booking[]>("rop-bookings", []);
   const [diningOrders, setDiningOrders] = useLocalStorage<DiningOrder[]>("rop-dining-orders", []);
@@ -128,6 +132,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [memberships, setMemberships] = useLocalStorage<Membership[]>("rop-memberships", []);
   const [employees, setEmployees] = useLocalStorage<Employee[]>("rop-employees", []);
   const [reports, setReports] = useLocalStorage<Report[]>("rop-reports", []);
+
+  const { language } = useLanguage();
 
   // Generate mock data if none exists
   useEffect(() => {

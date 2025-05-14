@@ -27,6 +27,9 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     } else {
       document.body.classList.remove("rtl");
     }
+    
+    // Force re-render components when language changes
+    window.dispatchEvent(new Event('language-changed'));
   }, [language]);
   
   // Simple translation function

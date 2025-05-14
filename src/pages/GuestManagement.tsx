@@ -1,9 +1,12 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { DataTable } from '@/components/shared/DataTable';
 import { Booking } from '@/contexts/DataContext';
 import { useData } from '@/contexts/DataContext';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { useRopDataService } from '@/utils/ropDataService';
+import { PageHeader } from '@/components/shared/PageHeader';
 
 // Define the column type for the DataTable
 type Column<T> = {
@@ -13,54 +16,63 @@ type Column<T> = {
 };
 
 const GuestManagement = () => {
-  const { bookings, setBookings } = useData();
+  const { bookings: originalBookings, setBookings } = useData();
+  const { t } = useLanguage();
+  const { translateBooking } = useRopDataService();
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
+  const [translatedBookings, setTranslatedBookings] = useState<Booking[]>([]);
+
+  // Translate bookings whenever language changes
+  useEffect(() => {
+    const translated = originalBookings.map(booking => translateBooking(booking));
+    setTranslatedBookings(translated);
+  }, [originalBookings, translateBooking]);
 
   // Define columns with proper typing for the DataTable
   const columns: Column<Booking>[] = [
     { 
-      header: 'ID', 
+      header: t('ID'), 
       accessor: 'id' as keyof Booking 
     },
     { 
-      header: 'Name', 
+      header: t('Name'), 
       accessor: 'name' as keyof Booking 
     },
     { 
-      header: 'Rank', 
+      header: t('Rank'), 
       accessor: 'rank' as keyof Booking 
     },
     { 
-      header: 'Room', 
+      header: t('Room'), 
       accessor: 'room' as keyof Booking 
     },
     { 
-      header: 'Check In', 
+      header: t('Check In'), 
       accessor: 'checkIn' as keyof Booking 
     },
     { 
-      header: 'Check Out', 
+      header: t('Check Out'), 
       accessor: 'checkOut' as keyof Booking 
     },
     { 
-      header: 'Status', 
+      header: t('Status'), 
       accessor: 'status' as keyof Booking,
       cell: (booking: Booking) => (
-        <span className={`badge ${booking.status === 'Confirmed' ? 'badge-success' : (booking.status === 'Checked In' ? 'badge-primary' : 'badge-warning')}`}>
+        <span className={`badge ${booking.status === t('Confirmed') ? 'badge-success' : (booking.status === t('Checked In') ? 'badge-primary' : 'badge-warning')}`}>
           {booking.status}
         </span>
       ) 
     },
     { 
-      header: 'Actions', 
+      header: t('Actions'), 
       accessor: (booking: Booking) => booking.id,
       cell: (booking: Booking) => (
         <div className="space-x-2">
-          <button className="btn btn-sm btn-primary">View</button>
-          <button className="btn btn-sm btn-secondary">Edit</button>
-          <button className="btn btn-sm btn-danger">Delete</button>
+          <button className="btn btn-sm btn-primary">{t('View')}</button>
+          <button className="btn btn-sm btn-secondary">{t('Edit')}</button>
+          <button className="btn btn-sm btn-danger">{t('Delete')}</button>
         </div>
       ) 
     }
@@ -79,36 +91,36 @@ const GuestManagement = () => {
   };
 
   const handleDeleteBooking = (id: number) => {
-    if (window.confirm('Are you sure you want to delete this booking?')) {
-      setBookings(bookings.filter(booking => booking.id !== id));
+    if (window.confirm(t('Are you sure you want to delete this booking?'))) {
+      setBookings(originalBookings.filter(booking => booking.id !== id));
     }
   };
 
   const handleSaveBooking = (booking: Booking) => {
     if (modalMode === 'add') {
-      const newId = Math.max(...bookings.map(b => b.id), 0) + 1;
-      setBookings([...bookings, { ...booking, id: newId }]);
+      const newId = Math.max(...originalBookings.map(b => b.id), 0) + 1;
+      setBookings([...originalBookings, { ...booking, id: newId }]);
     } else {
-      setBookings(bookings.map(b => b.id === booking.id ? booking : b));
+      setBookings(originalBookings.map(b => b.id === booking.id ? booking : b));
     }
     setIsModalOpen(false);
   };
 
   return (
     <AppLayout>
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold">Guest Management</h1>
-        <p className="text-gray-600">Manage room bookings and guest information</p>
-      </div>
+      <PageHeader
+        title={t("Guest Management")}
+        subtitle={t("Military personnel currently accommodated")}
+      />
 
       <div className="mb-4 flex justify-end">
-        <button className="btn btn-primary">Add New Booking</button>
+        <button className="btn btn-primary">{t('Add New Booking')}</button>
       </div>
       
       <DataTable 
-        data={bookings}
+        data={translatedBookings}
         columns={columns}
-        title="Guest Bookings"
+        title={t("Guest Bookings")}
         searchField="name"
       />
       

@@ -1,4 +1,3 @@
-
 export const translations = {
   en: {
     // Common UI elements
@@ -128,11 +127,36 @@ export const translations = {
     
     // Data translations
     dataTranslations: {
+      // Names (sample translations, would be extended with all names from data)
+      names: {
+        "Ali Al-Balushi": "Ali Al-Balushi",
+        "Mohammed Al-Busaidi": "Mohammed Al-Busaidi",
+        "Ahmed Al-Harthi": "Ahmed Al-Harthi",
+        "Fatma Al-Siyabi": "Fatma Al-Siyabi",
+        "Saeed Al-Maskari": "Saeed Al-Maskari",
+        "Khalid Al-Raisi": "Khalid Al-Raisi",
+        "Omar Al-Farsi": "Omar Al-Farsi",
+        "Abdullah Al-Habsi": "Abdullah Al-Habsi",
+        "Hamad Al-Kindi": "Hamad Al-Kindi",
+        "Salim Al-Zadjali": "Salim Al-Zadjali",
+        "Nasser Al-Balushi": "Nasser Al-Balushi",
+        "Ibrahim Al-Busaidi": "Ibrahim Al-Busaidi",
+        "Hamdan Al-Harthi": "Hamdan Al-Harthi",
+        "Rashid Al-Siyabi": "Rashid Al-Siyabi",
+        "Maryam Al-Maskari": "Maryam Al-Maskari"
+      },
       // Ranks
       ranks: {
         "Cadet": "Cadet",
         "Officer": "Officer",
         "Command": "Command",
+      },
+      // Room types
+      rooms: {
+        "Standard": "Standard",
+        "Premium": "Premium", 
+        "Suite": "Suite",
+        "Executive Suite": "Executive Suite"
       },
       // Meals
       meals: {
@@ -153,6 +177,19 @@ export const translations = {
         "Kosher": "Kosher",
         "Low sodium": "Low sodium",
       },
+      // Event names
+      events: {
+        "Training Seminar": "Training Seminar",
+        "Command Staff Meeting": "Command Staff Meeting",
+        "Annual Review": "Annual Review",
+        "Security Briefing": "Security Briefing",
+        "Officer Promotion Ceremony": "Officer Promotion Ceremony",
+        "Tactical Training": "Tactical Training",
+        "Police Academy Graduation": "Police Academy Graduation",
+        "International Security Conference": "International Security Conference",
+        "Community Outreach Program": "Community Outreach Program",
+        "Executive Retreat": "Executive Retreat"
+      },
       // Locations
       locations: {
         "Main Hall": "Main Hall",
@@ -161,6 +198,146 @@ export const translations = {
         "Outdoor Court": "Outdoor Court",
         "Executive Suite": "Executive Suite",
       },
+      // Status
+      status: {
+        "Confirmed": "Confirmed",
+        "Checked In": "Checked In",
+        "Checked Out": "Checked Out",
+        "Cancelled": "Cancelled",
+        "Placed": "Placed",
+        "Preparing": "Preparing",
+        "Ready": "Ready",
+        "Delivered": "Delivered",
+        "Planned": "Planned",
+        "In Progress": "In Progress",
+        "Completed": "Completed",
+        "Active": "Active",
+        "Pending Renewal": "Pending Renewal",
+        "Expired": "Expired",
+        "Suspended": "Suspended"
+      },
+      // Inventory categories
+      categories: {
+        "Food": "Food",
+        "Linen": "Linen",
+        "Toiletries": "Toiletries",
+        "Cleaning": "Cleaning",
+        "Kitchen": "Kitchen",
+        "Room amenities": "Room amenities"
+      },
+      // Inventory items
+      items: {
+        "Towels": "Towels",
+        "Bed sheets": "Bed sheets",
+        "Pillows": "Pillows",
+        "Rice": "Rice",
+        "Chicken": "Chicken",
+        "Beef": "Beef",
+        "Fish": "Fish",
+        "Toilet paper": "Toilet paper",
+        "Soap": "Soap",
+        "Shampoo": "Shampoo",
+        "Water bottles": "Water bottles",
+        "Coffee": "Coffee",
+        "Tea": "Tea",
+        "Cleaning supplies": "Cleaning supplies",
+        "Flour": "Flour",
+        "Sugar": "Sugar",
+        "Salt": "Salt",
+        "Vegetables": "Vegetables",
+        "Fruits": "Fruits"
+      },
+      // Suppliers
+      suppliers: {
+        "Oman Textiles": "Oman Textiles",
+        "Muscat Food Supplies": "Muscat Food Supplies",
+        "Al Bahja Group": "Al Bahja Group",
+        "Salalah Trading": "Salalah Trading",
+        "Gulf Hospitality Solutions": "Gulf Hospitality Solutions",
+        "Nizwa Consumables": "Nizwa Consumables"
+      },
+      // Transaction types
+      transactionTypes: {
+        "Salary Deduction": "Salary Deduction",
+        "Direct Payment": "Direct Payment",
+        "Department Billing": "Department Billing",
+        "Training Fee": "Training Fee",
+        "Accommodation Charge": "Accommodation Charge",
+        "Catering Service": "Catering Service",
+        "Facility Rental": "Facility Rental"
+      },
+      // Departments
+      departments: {
+        "Training": "Training",
+        "Operations": "Operations",
+        "Administration": "Administration",
+        "Intelligence": "Intelligence",
+        "Cybersecurity": "Cybersecurity",
+        "Community Policing": "Community Policing",
+        "Traffic": "Traffic",
+        "Emergency Response": "Emergency Response",
+        "Front Desk": "Front Desk",
+        "Food & Beverage": "Food & Beverage",
+        "Housekeeping": "Housekeeping",
+        "Maintenance": "Maintenance",
+        "Security": "Security",
+        "IT": "IT",
+        "Events": "Events",
+        "Human Resources": "Human Resources"
+      },
+      // Mobile app actions
+      actions: {
+        "Booked Room": "Booked Room",
+        "Ordered Meal": "Ordered Meal",
+        "Checked in": "Checked in",
+        "Checked out": "Checked out",
+        "Updated Profile": "Updated Profile",
+        "Viewed Statement": "Viewed Statement",
+        "Requested Assistance": "Requested Assistance",
+        "Registered for Event": "Registered for Event",
+        "Submitted Feedback": "Submitted Feedback",
+        "Renewed Membership": "Renewed Membership"
+      },
+      // Devices
+      devices: {
+        "iPhone": "iPhone",
+        "Samsung Galaxy": "Samsung Galaxy",
+        "Huawei": "Huawei",
+        "iPad": "iPad",
+        "Android Tablet": "Android Tablet"
+      },
+      // Employee roles
+      roles: {
+        "Receptionist": "Receptionist",
+        "Chef": "Chef",
+        "Room Attendant": "Room Attendant",
+        "Maintenance": "Maintenance",
+        "Security Officer": "Security Officer",
+        "Manager": "Manager",
+        "IT Support": "IT Support",
+        "Administrative Assistant": "Administrative Assistant",
+        "Event Coordinator": "Event Coordinator"
+      },
+      // Payroll statuses
+      payrollStatuses: {
+        "Paid": "Paid",
+        "Pending": "Pending",
+        "Processing": "Processing",
+        "Hold": "Hold"
+      },
+      // Report types
+      reportTypes: {
+        "Booking Trends": "Booking Trends",
+        "Financial Summary": "Financial Summary",
+        "Inventory Status": "Inventory Status",
+        "Employee Performance": "Employee Performance",
+        "Member Activity": "Member Activity",
+        "Event Summary": "Event Summary",
+        "Facility Usage": "Facility Usage",
+        "Dining Analysis": "Dining Analysis",
+        "Security Audit": "Security Audit",
+        "Revenue Forecast": "Revenue Forecast"
+      }
     }
   },
   
@@ -292,11 +469,36 @@ export const translations = {
     
     // Data translations
     dataTranslations: {
+      // Names
+      names: {
+        "Ali Al-Balushi": "علي البلوشي",
+        "Mohammed Al-Busaidi": "محمد البوسعيدي",
+        "Ahmed Al-Harthi": "أحمد الحارثي",
+        "Fatma Al-Siyabi": "فاطمة السيابي",
+        "Saeed Al-Maskari": "سعيد المسكري",
+        "Khalid Al-Raisi": "خالد الريسي",
+        "Omar Al-Farsi": "عمر الفارسي",
+        "Abdullah Al-Habsi": "عبدالله الحبسي",
+        "Hamad Al-Kindi": "حمد الكندي",
+        "Salim Al-Zadjali": "سالم الزدجالي",
+        "Nasser Al-Balushi": "ناصر البلوشي",
+        "Ibrahim Al-Busaidi": "إبراهيم البوسعيدي",
+        "Hamdan Al-Harthi": "حمدان الحارثي",
+        "Rashid Al-Siyabi": "راشد السيابي",
+        "Maryam Al-Maskari": "مريم المسكري"
+      },
       // Ranks
       ranks: {
         "Cadet": "ضابط متدرب",
         "Officer": "ضابط",
         "Command": "قيادة",
+      },
+      // Room types
+      rooms: {
+        "Standard": "عادية",
+        "Premium": "مميزة", 
+        "Suite": "جناح",
+        "Executive Suite": "جناح تنفيذي"
       },
       // Meals
       meals: {
@@ -317,6 +519,19 @@ export const translations = {
         "Kosher": "كوشر",
         "Low sodium": "قليل الصوديوم",
       },
+      // Event names
+      events: {
+        "Training Seminar": "ندوة تدريبية",
+        "Command Staff Meeting": "اجتماع ه��ئة القيادة",
+        "Annual Review": "المراجعة السنوية",
+        "Security Briefing": "إحاطة أمنية",
+        "Officer Promotion Ceremony": "حفل ترقية الضباط",
+        "Tactical Training": "تدريب تكتيكي",
+        "Police Academy Graduation": "تخرج أكاديمية الشرطة",
+        "International Security Conference": "مؤتمر الأمن الدولي",
+        "Community Outreach Program": "برنامج التواصل المجتمعي",
+        "Executive Retreat": "خلوة تنفيذية"
+      },
       // Locations
       locations: {
         "Main Hall": "القاعة الرئيسية",
@@ -325,6 +540,146 @@ export const translations = {
         "Outdoor Court": "الساحة الخارجية",
         "Executive Suite": "جناح تنفيذي",
       },
+      // Status
+      status: {
+        "Confirmed": "مؤكد",
+        "Checked In": "تم التسجيل",
+        "Checked Out": "تم المغادرة",
+        "Cancelled": "ملغي",
+        "Placed": "تم الطلب",
+        "Preparing": "قيد التحضير",
+        "Ready": "جاهز",
+        "Delivered": "تم التسليم",
+        "Planned": "مخطط",
+        "In Progress": "قيد التنفيذ",
+        "Completed": "مكتمل",
+        "Active": "نشط",
+        "Pending Renewal": "قيد التجديد",
+        "Expired": "منتهي",
+        "Suspended": "معلق"
+      },
+      // Inventory categories
+      categories: {
+        "Food": "طعام",
+        "Linen": "مفروشات",
+        "Toiletries": "مستلزمات الحمام",
+        "Cleaning": "تنظيف",
+        "Kitchen": "مطبخ",
+        "Room amenities": "مرافق الغرفة"
+      },
+      // Inventory items
+      items: {
+        "Towels": "مناشف",
+        "Bed sheets": "ملاءات السرير",
+        "Pillows": "وسائد",
+        "Rice": "أرز",
+        "Chicken": "دجاج",
+        "Beef": "لحم بقري",
+        "Fish": "سمك",
+        "Toilet paper": "ورق تواليت",
+        "Soap": "صابون",
+        "Shampoo": "شامبو",
+        "Water bottles": "زجاجات ماء",
+        "Coffee": "قهوة",
+        "Tea": "شاي",
+        "Cleaning supplies": "مستلزمات التنظيف",
+        "Flour": "طحين",
+        "Sugar": "سكر",
+        "Salt": "ملح",
+        "Vegetables": "خضروات",
+        "Fruits": "فواكه"
+      },
+      // Suppliers
+      suppliers: {
+        "Oman Textiles": "المنسوجات العمانية",
+        "Muscat Food Supplies": "مستلزمات الطعام مسقط",
+        "Al Bahja Group": "مجموعة البهجة",
+        "Salalah Trading": "تجارة صلالة",
+        "Gulf Hospitality Solutions": "حلول ضيافة الخليج",
+        "Nizwa Consumables": "مستهلكات نزوى"
+      },
+      // Transaction types
+      transactionTypes: {
+        "Salary Deduction": "خصم الراتب",
+        "Direct Payment": "دفع مباشر",
+        "Department Billing": "فواتير القسم",
+        "Training Fee": "رسوم التدريب",
+        "Accommodation Charge": "رسوم الإقامة",
+        "Catering Service": "خدمة الضيافة",
+        "Facility Rental": "تأجير المرافق"
+      },
+      // Departments
+      departments: {
+        "Training": "التدريب",
+        "Operations": "العمليات",
+        "Administration": "الإدارة",
+        "Intelligence": "الاستخبارات",
+        "Cybersecurity": "الأمن السيبراني",
+        "Community Policing": "الشرطة المجتمعية",
+        "Traffic": "المرور",
+        "Emergency Response": "الاستجابة للطوارئ",
+        "Front Desk": "الاستقبال",
+        "Food & Beverage": "الأغذية والمشروبات",
+        "Housekeeping": "التدبير المنزلي",
+        "Maintenance": "الصيانة",
+        "Security": "الأمن",
+        "IT": "تكنولوجيا المعلومات",
+        "Events": "الفعاليات",
+        "Human Resources": "الموارد البشرية"
+      },
+      // Mobile app actions
+      actions: {
+        "Booked Room": "حجز غرفة",
+        "Ordered Meal": "طلب وجبة",
+        "Checked in": "تسجيل الدخول",
+        "Checked out": "تسجيل الخروج",
+        "Updated Profile": "تحديث الملف الشخصي",
+        "Viewed Statement": "عرض البيان",
+        "Requested Assistance": "طلب المساعدة",
+        "Registered for Event": "التسجيل في فعالية",
+        "Submitted Feedback": "تقديم ملاحظات",
+        "Renewed Membership": "تجديد العضوية"
+      },
+      // Devices
+      devices: {
+        "iPhone": "آيفون",
+        "Samsung Galaxy": "سامسونج جالاكسي",
+        "Huawei": "هواوي",
+        "iPad": "آيباد",
+        "Android Tablet": "تابلت أندرويد"
+      },
+      // Employee roles
+      roles: {
+        "Receptionist": "موظف استقبال",
+        "Chef": "طباخ",
+        "Room Attendant": "مساعد غرفة",
+        "Maintenance": "صيانة",
+        "Security Officer": "ضابط أمن",
+        "Manager": "مدير",
+        "IT Support": "دعم تقني",
+        "Administrative Assistant": "مساعد إداري",
+        "Event Coordinator": "منسق فعاليات"
+      },
+      // Payroll statuses
+      payrollStatuses: {
+        "Paid": "مدفوع",
+        "Pending": "معلق",
+        "Processing": "قيد المعالجة",
+        "Hold": "متوقف"
+      },
+      // Report types
+      reportTypes: {
+        "Booking Trends": "اتجاهات الحجز",
+        "Financial Summary": "ملخص مالي",
+        "Inventory Status": "حالة المخزون",
+        "Employee Performance": "أداء الموظفين",
+        "Member Activity": "نشاط الأعضاء",
+        "Event Summary": "ملخص الفعالية",
+        "Facility Usage": "استخدام المرافق",
+        "Dining Analysis": "تحليل الطعام",
+        "Security Audit": "تدقيق أمني",
+        "Revenue Forecast": "توقعات الإيرادات"
+      }
     }
   }
 };
