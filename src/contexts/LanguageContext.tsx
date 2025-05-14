@@ -56,9 +56,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     return text;
   };
   
-  const dir = language === "ar" ? "rtl" : "ltr";
+  // Explicitly type the dir variable as "ltr" | "rtl"
+  const dir: "ltr" | "rtl" = language === "ar" ? "rtl" : "ltr";
   
-  const value = {
+  const value: LanguageContextType = {
     language,
     setLanguage,
     t,
