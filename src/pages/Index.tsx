@@ -9,6 +9,7 @@ import { RevenueChart } from '@/components/dashboard/RevenueChart';
 import { MembershipChart } from '@/components/dashboard/MembershipChart';
 import { MobileInteractionsChart } from '@/components/dashboard/MobileInteractionsChart';
 import { RecentReports } from '@/components/dashboard/RecentReports';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Index = () => {
   const { 
@@ -23,6 +24,8 @@ const Index = () => {
     reports
   } = useData();
   
+  const { t } = useLanguage();
+  
   // Calculate stats
   const activeBookings = bookings.filter(b => b.status === "Confirmed" || b.status === "Checked In").length;
   const pendingOrders = diningOrders.filter(o => o.status === "Placed" || o.status === "Preparing").length;
@@ -36,8 +39,8 @@ const Index = () => {
   return (
     <AppLayout>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold mb-2">Dashboard</h1>
-        <p className="text-gray-600">Welcome to the Integrated Hotel Management System</p>
+        <h1 className="text-2xl font-bold mb-2">{t("Dashboard")}</h1>
+        <p className="text-gray-600">{t("Welcome to the Integrated Hotel Management System")}</p>
       </div>
       
       {/* Primary Stats */}

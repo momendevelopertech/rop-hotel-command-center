@@ -1,4 +1,7 @@
 
+// This file is kept for legacy purposes and might be used by other components
+// We've moved to using Recharts for React components
+
 import { Chart as ChartJS, registerables } from 'chart.js';
 
 // Register Chart.js components
