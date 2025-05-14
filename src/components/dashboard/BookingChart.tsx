@@ -67,6 +67,19 @@ export function BookingChart({ bookings }: BookingChartProps) {
     }
   };
 
+  // Custom tooltip component to resolve the type issue
+  const CustomTooltip = (props: any) => {
+    if (!props.active || !props.payload) {
+      return null;
+    }
+    return (
+      <ChartTooltipContent 
+        {...props} 
+        className="bg-white border border-gray-200 shadow-lg"
+      />
+    );
+  };
+
   return (
     <ChartCard 
       title={t("Booking Trends")}
@@ -108,14 +121,7 @@ export function BookingChart({ bookings }: BookingChartProps) {
             <CartesianGrid strokeDasharray="3 3" vertical={false} />
             <XAxis dataKey="name" />
             <YAxis />
-            <Tooltip 
-              content={(props) => (
-                <ChartTooltipContent 
-                  {...props} 
-                  className="bg-white border border-gray-200 shadow-lg"
-                />
-              )} 
-            />
+            <Tooltip content={<CustomTooltip />} />
             <Legend />
             <Bar dataKey="bookings" name={t("Bookings")} fill="var(--color-bookings, #1E3A8A)" radius={[4, 4, 0, 0]} />
           </BarChart>
