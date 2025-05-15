@@ -5,13 +5,16 @@ import { ReportsList } from "@/components/reports/ReportsList";
 import { ReportGenerator } from "@/components/reports/ReportGenerator";
 import { ReportStats } from "@/components/reports/ReportStats";
 import { PageHeader } from "@/components/shared/PageHeader";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function ReportsAnalytics() {
+  const { t } = useLanguage();
+  
   return (
     <AppLayout>
       <PageHeader 
-        title="Reports & Analytics" 
-        subtitle="Create and view analytical reports"
+        title={t("Reports & Analytics")}
+        subtitle={t("Create and view analytical reports")}
       />
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">

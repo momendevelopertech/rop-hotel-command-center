@@ -5,15 +5,17 @@ import { MobileUsageStats } from "@/components/mobile/MobileUsageStats";
 import { MobileInteractionsTable } from "@/components/mobile/MobileInteractionsTable";
 import { MobileAppPreview } from "@/components/mobile/MobileAppPreview";
 import { PageHeader } from "@/components/shared/PageHeader";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function MobileApp() {
   const [selectedScreen, setSelectedScreen] = useState<string>("home");
+  const { t } = useLanguage();
 
   return (
     <AppLayout>
       <PageHeader 
-        title="تطبيق الهاتف" 
-        subtitle="إدارة وتحليل استخدام تطبيق الهاتف المحمول"
+        title={t("Mobile App")}
+        subtitle={t("Active users on the ROP mobile platform")}
       />
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">

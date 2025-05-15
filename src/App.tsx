@@ -17,6 +17,7 @@ import Membership from "./pages/Membership";
 import HumanResources from "./pages/HumanResources";
 import Inventory from "./pages/Inventory";
 import ReportsAnalytics from "./pages/ReportsAnalytics";
+import POSSystem from "./pages/POSSystem";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ const App = () => (
               <Route path="/hr" element={<HumanResources />} />
               <Route path="/inventory" element={<Inventory />} />
               <Route path="/reports" element={<ReportsAnalytics />} />
+              <Route path="/pos" element={<POSSystem />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

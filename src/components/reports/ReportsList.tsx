@@ -5,61 +5,64 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@
 import { Badge } from "@/components/ui/badge";
 import { FileText, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const reports = [
   {
     id: "RPT-001",
-    name: "تقرير الإيرادات الشهري",
-    category: "مالية",
+    name: "Monthly Revenue Report",
+    category: "Finance",
     date: "2025-05-01",
-    status: "جاهز"
+    status: "Ready"
   },
   {
     id: "RPT-002",
-    name: "تقرير الإشغال",
-    category: "الغرف",
+    name: "Occupancy Report",
+    category: "Rooms",
     date: "2025-05-01",
-    status: "جاهز"
+    status: "Ready"
   },
   {
     id: "RPT-003",
-    name: "تقرير مبيعات المطعم",
-    category: "المطعم",
+    name: "Restaurant Sales Report",
+    category: "Restaurant",
     date: "2025-05-01",
-    status: "جاهز"
+    status: "Ready"
   },
   {
     id: "RPT-004",
-    name: "تقرير الضيوف الجدد",
-    category: "الضيوف",
+    name: "New Guests Report",
+    category: "Guests",
     date: "2025-05-01",
-    status: "قيد التجهيز"
+    status: "Processing"
   },
   {
     id: "RPT-005",
-    name: "تقرير الأداء الشهري",
-    category: "إدارة",
+    name: "Monthly Performance Report",
+    category: "Management",
     date: "2025-04-30",
-    status: "جاهز"
+    status: "Ready"
   }
 ];
 
 export function ReportsList() {
+  const { t, translate } = useLanguage();
+  
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle className="text-lg font-medium">التقارير المتاحة</CardTitle>
+        <CardTitle className="text-lg font-medium">{t("Available Reports")}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="rounded-md border">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>اسم التقرير</TableHead>
-                <TableHead>التصنيف</TableHead>
-                <TableHead>تاريخ الإنشاء</TableHead>
-                <TableHead>الحالة</TableHead>
-                <TableHead className="text-right">عرض</TableHead>
+                <TableHead>{t("Report Name")}</TableHead>
+                <TableHead>{t("Category")}</TableHead>
+                <TableHead>{t("Date Generated")}</TableHead>
+                <TableHead>{t("Status")}</TableHead>
+                <TableHead className="text-right">{t("Actions")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -68,28 +71,28 @@ export function ReportsList() {
                   <TableCell className="flex items-center gap-2">
                     <FileText className="h-4 w-4 text-rop-blue" />
                     <div>
-                      <div className="font-medium">{report.name}</div>
+                      <div className="font-medium">{translate(report.name, "reportTypes")}</div>
                       <div className="text-xs text-muted-foreground">{report.id}</div>
                     </div>
                   </TableCell>
                   <TableCell>
-                    {report.category}
+                    {translate(report.category, "departments")}
                   </TableCell>
                   <TableCell>{report.date}</TableCell>
                   <TableCell>
-                    <Badge variant={report.status === "جاهز" ? "success" : "secondary"}>
-                      {report.status}
+                    <Badge variant={translate(report.status, "status") === translate("Ready", "status") ? "success" : "secondary"}>
+                      {translate(report.status, "status")}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">
                     <Button
                       variant="ghost"
                       size="sm"
-                      disabled={report.status !== "جاهز"}
+                      disabled={translate(report.status, "status") !== translate("Ready", "status")}
                       className="h-8 w-8 p-0"
                     >
                       <Download className="h-4 w-4" />
-                      <span className="sr-only">تنزيل</span>
+                      <span className="sr-only">{t("Download")}</span>
                     </Button>
                   </TableCell>
                 </TableRow>

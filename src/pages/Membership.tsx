@@ -5,13 +5,16 @@ import { MembersTable } from "@/components/membership/MembersTable";
 import { MembershipStats } from "@/components/membership/MembershipStats";
 import { RankDistribution } from "@/components/membership/RankDistribution";
 import { PageHeader } from "@/components/shared/PageHeader";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Membership() {
+  const { t } = useLanguage();
+  
   return (
     <AppLayout>
       <PageHeader 
-        title="العضويات" 
-        subtitle="إدارة عضويات الضباط وامتيازاتهم"
+        title={t("Membership")}
+        subtitle={t("Officer memberships requiring renewal")}
       />
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">

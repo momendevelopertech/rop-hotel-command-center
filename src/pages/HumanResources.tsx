@@ -5,13 +5,16 @@ import { EmployeesTable } from "@/components/hr/EmployeesTable";
 import { HRStats } from "@/components/hr/HRStats";
 import { DepartmentDistribution } from "@/components/hr/DepartmentDistribution";
 import { PageHeader } from "@/components/shared/PageHeader";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function HumanResources() {
+  const { t } = useLanguage();
+  
   return (
     <AppLayout>
       <PageHeader 
-        title="الموارد البشرية" 
-        subtitle="إدارة الموظفين والهيكل التنظيمي"
+        title={t("Human Resources")}
+        subtitle={t("Staff across all hotel departments")}
       />
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">

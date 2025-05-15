@@ -5,13 +5,16 @@ import { InventoryTable } from "@/components/inventory/InventoryTable";
 import { InventoryStats } from "@/components/inventory/InventoryStats";
 import { LowStockItems } from "@/components/inventory/LowStockItems";
 import { PageHeader } from "@/components/shared/PageHeader";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Inventory() {
+  const { t } = useLanguage();
+  
   return (
     <AppLayout>
       <PageHeader 
-        title="المخزون" 
-        subtitle="إدارة المخزون والمستلزمات"
+        title={t("Inventory")}
+        subtitle={t("Inventory items requiring restock")}
       />
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
