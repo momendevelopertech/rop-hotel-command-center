@@ -87,6 +87,7 @@ export const translations = {
     "Beverages": "Beverages",
     "Desserts": "Desserts",
     "Restaurant order management": "Restaurant order management",
+    "Dining Orders": "Dining Orders",
     
     // Event Management
     "Event Name": "Event Name",
@@ -155,7 +156,6 @@ export const translations = {
     "Recent Reports": "Recent Reports",
     "Export": "Export",
     "Report Name": "Report Name",
-    "Category": "Category",
     "Available Reports": "Available Reports",
     "Download": "Download",
     
@@ -172,7 +172,6 @@ export const translations = {
     "Ready": "Ready",
     "Delivered": "Delivered",
     "Planned": "Planned",
-    "Dining Orders": "Dining Orders",
     
     // Data translations
     dataTranslations: {
@@ -192,13 +191,14 @@ export const translations = {
         "Ibrahim Al-Busaidi": "Ibrahim Al-Busaidi",
         "Hamdan Al-Harthi": "Hamdan Al-Harthi",
         "Rashid Al-Siyabi": "Rashid Al-Siyabi",
-        "Maryam Al-Maskari": "Maryam Al-Maskari"
+        "Maryam Al-Maskari": "Maryam Al-Maskari",
+        "Captain Omar": "Captain Omar"
       },
       // Ranks
       ranks: {
         "Cadet": "Cadet",
         "Officer": "Officer",
-        "Command": "Command",
+        "Command": "Command"
       },
       // Room types
       rooms: {
@@ -230,7 +230,7 @@ export const translations = {
         "No restrictions": "No restrictions",
         "Vegetarian": "Vegetarian",
         "Kosher": "Kosher",
-        "Low sodium": "Low sodium",
+        "Low sodium": "Low sodium"
       },
       // Event names
       events: {
@@ -251,7 +251,7 @@ export const translations = {
         "Conference Room A": "Conference Room A",
         "Training Center": "Training Center",
         "Outdoor Court": "Outdoor Court",
-        "Executive Suite": "Executive Suite",
+        "Executive Suite": "Executive Suite"
       },
       // Status
       status: {
@@ -488,6 +488,7 @@ export const translations = {
     "Beverages": "المشروبات",
     "Desserts": "الحلويات",
     "Restaurant order management": "إدارة طلبات المطعم",
+    "Dining Orders": "طلبات المطعم",
     
     // Event Management
     "Event Name": "اسم الفعالية",
@@ -559,7 +560,6 @@ export const translations = {
     "Category": "الفئة",
     "Available Reports": "التقارير المتاحة",
     "Download": "تنزيل",
-    "Dining Orders": "طلبات المطعم",
     
     // Status terms
     "Confirmed": "مؤكد",
@@ -593,13 +593,14 @@ export const translations = {
         "Ibrahim Al-Busaidi": "إبراهيم البوسعيدي",
         "Hamdan Al-Harthi": "حمدان الحارثي",
         "Rashid Al-Siyabi": "راشد السيابي",
-        "Maryam Al-Maskari": "مريم المسكري"
+        "Maryam Al-Maskari": "مريم المسكري",
+        "Captain Omar": "النقيب عمر"
       },
       // Ranks
       ranks: {
         "Cadet": "ضابط متدرب",
         "Officer": "ضابط",
-        "Command": "قيادة",
+        "Command": "قيادة"
       },
       // Room types
       rooms: {
@@ -631,7 +632,7 @@ export const translations = {
         "No restrictions": "بدون قيود",
         "Vegetarian": "نباتي",
         "Kosher": "كوشر",
-        "Low sodium": "قليل الصوديوم",
+        "Low sodium": "قليل الصوديوم"
       },
       // Event names
       events: {
@@ -652,7 +653,7 @@ export const translations = {
         "Conference Room A": "غرفة المؤتمرات أ",
         "Training Center": "مركز التدريب",
         "Outdoor Court": "الساحة الخارجية",
-        "Executive Suite": "جناح تنفيذي",
+        "Executive Suite": "جناح تنفيذي"
       },
       // Status
       status: {
@@ -739,12 +740,7 @@ export const translations = {
         "Security": "الأمن",
         "IT": "تكنولوجيا المعلومات",
         "Events": "الفعاليات",
-        "Human Resources": "الموارد البشرية",
-        "Rooms": "الغرف",
-        "Restaurant": "المطعم",
-        "Guests": "الضيوف",
-        "Management": "الإدارة",
-        "Finance": "المالية"
+        "Human Resources": "الموارد البشرية"
       },
       // Mobile app actions
       actions: {
@@ -807,4 +803,3 @@ export const translations = {
     }
   }
 };
-

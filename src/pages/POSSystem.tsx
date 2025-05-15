@@ -8,6 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Plus, Minus, Printer, CreditCard, Check } from "lucide-react";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 interface MenuItem {
   id: number;
@@ -32,20 +34,20 @@ export default function POSSystem() {
   const [currentOrder, setCurrentOrder] = useState<OrderItem[]>([]);
   const [tableNumber, setTableNumber] = useState<string>("");
   
-  // Sample menu items
+  // Sample menu items with real food images
   const menuItems: MenuItem[] = [
-    { id: 1, name: "Grilled Chicken", category: "main", price: 8.5, image: "/placeholder.svg" },
-    { id: 2, name: "Fish Curry", category: "main", price: 9.25, image: "/placeholder.svg" },
-    { id: 3, name: "Lamb Biryani", category: "main", price: 10.5, image: "/placeholder.svg" },
-    { id: 4, name: "Vegetable Pasta", category: "main", price: 7.5, image: "/placeholder.svg" },
-    { id: 5, name: "Caesar Salad", category: "appetizer", price: 5.75, image: "/placeholder.svg" },
-    { id: 6, name: "Seafood Platter", category: "appetizer", price: 12, image: "/placeholder.svg" },
-    { id: 7, name: "Water", category: "beverages", price: 1.5, image: "/placeholder.svg" },
-    { id: 8, name: "Soft Drink", category: "beverages", price: 2.5, image: "/placeholder.svg" },
-    { id: 9, name: "Arabic Coffee", category: "beverages", price: 3.5, image: "/placeholder.svg" },
-    { id: 10, name: "Tea", category: "beverages", price: 2.0, image: "/placeholder.svg" },
-    { id: 11, name: "Fruit Salad", category: "dessert", price: 4.5, image: "/placeholder.svg" },
-    { id: 12, name: "Chocolate Cake", category: "dessert", price: 5.5, image: "/placeholder.svg" },
+    { id: 1, name: "Grilled Chicken", category: "main", price: 8.5, image: "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Z3JpbGxlZCUyMGNoaWNrZW58ZW58MHx8MHx8fDA%3D" },
+    { id: 2, name: "Fish Curry", category: "main", price: 9.25, image: "https://images.unsplash.com/photo-1626101858943-22b222ace1ba?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZmlzaCUyMGN1cnJ5fGVufDB8fDB8fHww" },
+    { id: 3, name: "Lamb Biryani", category: "main", price: 10.5, image: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YmlyeWFuaXxlbnwwfHwwfHx8MA%3D%3D" },
+    { id: 4, name: "Vegetable Pasta", category: "main", price: 7.5, image: "https://images.unsplash.com/photo-1598866594230-a7c12756260f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dmVnZXRhYmxlJTIwcGFzdGF8ZW58MHx8MHx8fDA%3D" },
+    { id: 5, name: "Caesar Salad", category: "appetizer", price: 5.75, image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2Flc2FyJTIwc2FsYWR8ZW58MHx8MHx8fDA%3D" },
+    { id: 6, name: "Seafood Platter", category: "appetizer", price: 12, image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8c2VhZm9vZCUyMHBsYXR0ZXJ8ZW58MHx8MHx8fDA%3D" },
+    { id: 7, name: "Water", category: "beverages", price: 1.5, image: "https://images.unsplash.com/photo-1564419320461-6870880221ad?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2F0ZXIlMjBib3R0bGV8ZW58MHx8MHx8fDA%3D" },
+    { id: 8, name: "Soft Drink", category: "beverages", price: 2.5, image: "https://images.unsplash.com/photo-1581636625402-29b2a704ef13?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHNvZnQlMjBkcmlua3xlbnwwfHwwfHx8MA%3D%3D" },
+    { id: 9, name: "Arabic Coffee", category: "beverages", price: 3.5, image: "https://images.unsplash.com/photo-1665881900361-2801eff90a68?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YXJhYmljJTIwY29mZmVlfGVufDB8fDB8fHww" },
+    { id: 10, name: "Tea", category: "beverages", price: 2.0, image: "https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dGVhfGVufDB8fDB8fHww" },
+    { id: 11, name: "Fruit Salad", category: "dessert", price: 4.5, image: "https://images.unsplash.com/photo-1564093497595-593b96d80180?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8ZnJ1aXQlMjBzYWxhZHxlbnwwfHwwfHx8MA%3D%3D" },
+    { id: 12, name: "Chocolate Cake", category: "dessert", price: 5.5, image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2hvY29sYXRlJTIwY2FrZXxlbnwwfHwwfHx8MA%3D%3D" },
   ];
 
   // Add item to order
@@ -147,8 +149,15 @@ export default function POSSystem() {
         {/* Menu Section */}
         <div className="lg:col-span-2">
           <Card>
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>{t("Menu")}</CardTitle>
+              <div className="flex items-center space-x-2">
+                <Avatar className="h-10 w-10">
+                  <AvatarImage src="https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzJ8fGFyYWIlMjBtYW58ZW58MHx8MHx8fDA%3D" alt="Captain Omar" />
+                  <AvatarFallback>CO</AvatarFallback>
+                </Avatar>
+                <span className="font-medium">{translate("Captain Omar", "names")}</span>
+              </div>
             </CardHeader>
             <CardContent>
               <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -161,13 +170,21 @@ export default function POSSystem() {
                 
                 {["main", "appetizer", "beverages", "dessert"].map(category => (
                   <TabsContent value={category} key={category}>
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
                       {menuItems
                         .filter(item => item.category === category)
                         .map(item => (
                           <Card key={item.id} className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => addToOrder(item)}>
                             <CardContent className="p-3">
-                              <img src={item.image} alt={translate(item.name, "meals")} className="w-full h-24 object-cover rounded" />
+                              <div className="mb-2 overflow-hidden rounded-md">
+                                <AspectRatio ratio={16 / 9}>
+                                  <img 
+                                    src={item.image} 
+                                    alt={translate(item.name, "meals")} 
+                                    className="w-full h-full object-cover rounded"
+                                  />
+                                </AspectRatio>
+                              </div>
                               <div className="mt-2">
                                 <p className="font-medium">{translate(item.name, "meals")}</p>
                                 <p className="text-sm text-gray-600">{item.price.toFixed(2)} OMR</p>
