@@ -1,45 +1,54 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useData } from "@/contexts/DataContext";
 import { DataTable } from "@/components/shared/DataTable";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Plus, Eye, FileEdit, Trash2 } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useRopDataService } from "@/utils/ropDataService";
 
 export function MembersTable() {
-  const { memberships } = useData();
+  const { memberships: originalMemberships } = useData();
+  const { t } = useLanguage();
+  const { translateMembership } = useRopDataService();
+  const [translatedMemberships, setTranslatedMemberships] = useState(originalMemberships);
+
+  useEffect(() => {
+    setTranslatedMemberships(originalMemberships.map(member => translateMembership(member)));
+  }, [originalMemberships, translateMembership]);
 
   const columns = [
     { 
-      header: "الضابط", 
+      header: t("Officer"), 
       accessor: "officer" 
     },
     { 
-      header: "الرتبة", 
+      header: t("Rank"), 
       accessor: "rank" 
     },
     { 
-      header: "الحالة", 
+      header: t("Status"), 
       accessor: "status",
       cell: (member: any) => {
-        const variant = member.status === "active" 
+        const variant = member.status === t("Active") 
           ? "green" 
-          : member.status === "pending" 
+          : member.status === t("Pending Renewal") 
             ? "yellow" 
             : "red";
         return <StatusBadge status={member.status} variant={variant} />;
       }
     },
     { 
-      header: "تاريخ التجديد", 
+      header: t("Renewal Date"), 
       accessor: "renewal" 
     },
     { 
-      header: "عضو منذ", 
+      header: t("Member Since"), 
       accessor: "memberSince" 
     },
     { 
-      header: "إجراءات", 
+      header: t("Actions"), 
       accessor: "id",
       cell: () => (
         <div className="flex space-x-2">
@@ -59,13 +68,13 @@ export function MembersTable() {
 
   return (
     <DataTable
-      title="الأعضاء"
-      data={memberships}
+      title={t("Members")}
+      data={translatedMemberships}
       columns={columns}
       searchField="officer"
       actions={
         <Button size="sm">
-          <Plus className="mr-2 h-4 w-4" /> عضو جديد
+          <Plus className="mr-2 h-4 w-4" /> {t("Add New")}
         </Button>
       }
     />

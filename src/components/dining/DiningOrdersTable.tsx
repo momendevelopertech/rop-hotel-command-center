@@ -1,49 +1,58 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useData } from "@/contexts/DataContext";
 import { DataTable } from "@/components/shared/DataTable";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Eye, FileEdit, Trash2, Plus } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useRopDataService } from "@/utils/ropDataService";
 
 export function DiningOrdersTable() {
-  const { diningOrders } = useData();
+  const { diningOrders: originalOrders } = useData();
+  const { t } = useLanguage();
+  const { translateDiningOrder } = useRopDataService();
+  const [translatedOrders, setTranslatedOrders] = useState(originalOrders);
+
+  useEffect(() => {
+    setTranslatedOrders(originalOrders.map(order => translateDiningOrder(order)));
+  }, [originalOrders, translateDiningOrder]);
 
   const columns = [
     { 
-      header: "رقم الطلب", 
+      header: t("Order Number"), 
       accessor: "id" 
     },
     { 
-      header: "الضابط", 
+      header: t("Officer"), 
       accessor: "name" 
     },
     { 
-      header: "الوجبة", 
+      header: t("Meal"), 
       accessor: "meal" 
     },
     { 
-      header: "متطلبات غذائية", 
+      header: t("Dietary Requirements"), 
       accessor: "dietary" 
     },
     { 
-      header: "الحالة", 
+      header: t("Status"), 
       accessor: "status",
       cell: (order: any) => {
-        const variant = order.status === "completed" 
+        const variant = order.status === t("Completed") 
           ? "green" 
-          : order.status === "pending" 
+          : order.status === t("Pending") 
             ? "yellow" 
             : "blue";
         return <StatusBadge status={order.status} variant={variant} />;
       }
     },
     { 
-      header: "وقت الطلب", 
+      header: t("Time Ordered"), 
       accessor: "timestamp" 
     },
     { 
-      header: "إجراءات", 
+      header: t("Actions"), 
       accessor: "id",
       cell: () => (
         <div className="flex space-x-2">
@@ -63,13 +72,13 @@ export function DiningOrdersTable() {
 
   return (
     <DataTable
-      title="طلبات الطعام"
-      data={diningOrders}
+      title={t("Dining Orders")}
+      data={translatedOrders}
       columns={columns}
       searchField="name"
       actions={
         <Button size="sm">
-          <Plus className="mr-2 h-4 w-4" /> طلب جديد
+          <Plus className="mr-2 h-4 w-4" /> {t("Add New")}
         </Button>
       }
     />

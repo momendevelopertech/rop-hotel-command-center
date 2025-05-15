@@ -1,3 +1,4 @@
+
 export const translations = {
   en: {
     // Common UI elements
@@ -11,6 +12,7 @@ export const translations = {
     "Human Resources": "Human Resources",
     "Inventory": "Inventory",
     "Reports & Analytics": "Reports & Analytics",
+    "POS System": "POS System",
     
     // Buttons and actions
     "Change to Arabic": "Change to Arabic",
@@ -18,6 +20,20 @@ export const translations = {
     "View Details": "View Details",
     "View All": "View All",
     "Add New": "Add New",
+    "Add New Booking": "Add New Booking",
+    "View": "View",
+    "Edit": "Edit",
+    "Delete": "Delete",
+    "Add": "Add",
+    "Save": "Save",
+    "Cancel": "Cancel",
+    "Submit": "Submit",
+    "Search": "Search",
+    "Filter": "Filter",
+    "Sort": "Sort",
+    "Print": "Print",
+    "Pay": "Pay",
+    "Place": "Place",
     
     // Dashboard stats
     "Active Bookings": "Active Bookings",
@@ -28,6 +44,7 @@ export const translations = {
     "Employees": "Employees",
     "Low Stock Items": "Low Stock Items",
     "Mobile App Users": "Mobile App Users",
+    "Welcome to the Integrated Hotel Management System": "Welcome to the Integrated Hotel Management System",
     
     // Guest Management
     "ID": "ID",
@@ -39,6 +56,8 @@ export const translations = {
     "Status": "Status",
     "Actions": "Actions",
     "Military personnel currently accommodated": "Military personnel currently accommodated",
+    "Guest Bookings": "Guest Bookings",
+    "Are you sure you want to delete this booking?": "Are you sure you want to delete this booking?",
     
     // Dining & Catering
     "Order Number": "Order Number",
@@ -51,6 +70,23 @@ export const translations = {
     "Average Wait Time": "Average Wait Time",
     "Mess hall and catering orders in process": "Mess hall and catering orders in process",
     "Menu Items": "Menu Items",
+    "Menu": "Menu",
+    "Current Order": "Current Order",
+    "Total": "Total",
+    "Table": "Table",
+    "No items in order": "No items in order",
+    "added to order": "added to order",
+    "Item Added": "Item Added",
+    "Order Placed": "Order Placed",
+    "Your order has been sent to the kitchen": "Your order has been sent to the kitchen",
+    "Please add items to your order": "Please add items to your order",
+    "Please enter a table number": "Please enter a table number",
+    "Error": "Error",
+    "Main Courses": "Main Courses",
+    "Appetizers": "Appetizers",
+    "Beverages": "Beverages",
+    "Desserts": "Desserts",
+    "Restaurant order management": "Restaurant order management",
     
     // Event Management
     "Event Name": "Event Name",
@@ -62,6 +98,7 @@ export const translations = {
     "Total Attendance": "Total Attendance",
     "Scheduled events and trainings": "Scheduled events and trainings",
     "Calendar": "Calendar",
+    "Upcoming Events": "Upcoming Events",
     
     // Finance & Reports
     "Total Revenue": "Total Revenue",
@@ -81,6 +118,7 @@ export const translations = {
     "Top Actions": "Top Actions",
     "App Preview": "App Preview",
     "Active users on the ROP mobile platform": "Active users on the ROP mobile platform",
+    "User Interactions": "User Interactions",
     
     // Membership
     "Active": "Active",
@@ -90,6 +128,8 @@ export const translations = {
     "Member Since": "Member Since",
     "Renewal Date": "Renewal Date",
     "Officer memberships requiring renewal": "Officer memberships requiring renewal",
+    "Members": "Members",
+    "Rank Distribution": "Rank Distribution",
     
     // Human Resources
     "Role": "Role",
@@ -107,6 +147,7 @@ export const translations = {
     "Reorder Level": "Reorder Level",
     "Inventory items requiring restock": "Inventory items requiring restock",
     "Low Stock": "Low Stock",
+    "Low Stock Items": "Low Stock Items",
     
     // Reports & Analytics
     "Report Type": "Report Type",
@@ -124,6 +165,11 @@ export const translations = {
     "Pending": "Pending",
     "Completed": "Completed",
     "In Progress": "In Progress",
+    "Placed": "Placed",
+    "Preparing": "Preparing",
+    "Ready": "Ready",
+    "Delivered": "Delivered",
+    "Planned": "Planned",
     
     // Data translations
     dataTranslations: {
@@ -168,6 +214,12 @@ export const translations = {
         "Caesar Salad": "Caesar Salad",
         "Seafood Platter": "Seafood Platter",
         "Rice and Curry": "Rice and Curry",
+        "Water": "Water",
+        "Soft Drink": "Soft Drink",
+        "Arabic Coffee": "Arabic Coffee",
+        "Tea": "Tea",
+        "Fruit Salad": "Fruit Salad",
+        "Chocolate Cake": "Chocolate Cake"
       },
       // Dietary options
       dietary: {
@@ -353,6 +405,7 @@ export const translations = {
     "Human Resources": "الموارد البشرية",
     "Inventory": "المخزون",
     "Reports & Analytics": "التقارير والتحليلات",
+    "POS System": "نظام نقاط البيع",
     
     // Buttons and actions
     "Change to Arabic": "التغيير إلى العربية",
@@ -360,6 +413,20 @@ export const translations = {
     "View Details": "عرض التفاصيل",
     "View All": "عرض الكل",
     "Add New": "إضافة جديد",
+    "Add New Booking": "إضافة حجز جديد",
+    "View": "عرض",
+    "Edit": "تعديل",
+    "Delete": "حذف",
+    "Add": "إضافة",
+    "Save": "حفظ",
+    "Cancel": "إلغاء",
+    "Submit": "إرسال",
+    "Search": "بحث",
+    "Filter": "تصفية",
+    "Sort": "ترتيب",
+    "Print": "طباعة",
+    "Pay": "دفع",
+    "Place": "تأكيد",
     
     // Dashboard stats
     "Active Bookings": "الحجوزات النشطة",
@@ -370,6 +437,7 @@ export const translations = {
     "Employees": "الموظفين",
     "Low Stock Items": "العناصر منخفضة المخزون",
     "Mobile App Users": "مستخدمي التطبيق",
+    "Welcome to the Integrated Hotel Management System": "مرحبًا بكم في نظام إدارة الفندق المتكامل",
     
     // Guest Management
     "ID": "المعرف",
@@ -381,6 +449,8 @@ export const translations = {
     "Status": "الحالة",
     "Actions": "إجراءات",
     "Military personnel currently accommodated": "ضباط الشرطة المقيمين حالياً",
+    "Guest Bookings": "حجوزات الضيوف",
+    "Are you sure you want to delete this booking?": "هل أنت متأكد من رغبتك في حذف هذا الحجز؟",
     
     // Dining & Catering
     "Order Number": "رقم الطلب",
@@ -393,6 +463,23 @@ export const translations = {
     "Average Wait Time": "متوسط وقت الانتظار",
     "Mess hall and catering orders in process": "طلبات قاعة الطعام والضيافة قيد التنفيذ",
     "Menu Items": "قائمة الطعام",
+    "Menu": "القائمة",
+    "Current Order": "الطلب الحالي",
+    "Total": "المجموع",
+    "Table": "طاولة",
+    "No items in order": "لا توجد عناصر في الطلب",
+    "added to order": "تمت إضافته للطلب",
+    "Item Added": "تمت إضافة العنصر",
+    "Order Placed": "تم تقديم الطلب",
+    "Your order has been sent to the kitchen": "تم إرسال طلبك إلى المطبخ",
+    "Please add items to your order": "الرجاء إضافة عناصر إلى طلبك",
+    "Please enter a table number": "الرجاء إدخال رقم الطاولة",
+    "Error": "خطأ",
+    "Main Courses": "الأطباق الرئيسية",
+    "Appetizers": "المقبلات",
+    "Beverages": "المشروبات",
+    "Desserts": "الحلويات",
+    "Restaurant order management": "إدارة طلبات المطعم",
     
     // Event Management
     "Event Name": "اسم الفعالية",
@@ -404,6 +491,7 @@ export const translations = {
     "Total Attendance": "إجمالي الحضور",
     "Scheduled events and trainings": "الفعاليات والتدريبات المجدولة",
     "Calendar": "التقويم",
+    "Upcoming Events": "الفعاليات القادمة",
     
     // Finance & Reports
     "Total Revenue": "إجمالي الإيرادات",
@@ -423,6 +511,7 @@ export const translations = {
     "Top Actions": "الإجراءات الأكثر شيوعاً",
     "App Preview": "معاينة التطبيق",
     "Active users on the ROP mobile platform": "المستخدمون النشطون على منصة تطبيق شرطة عمان",
+    "User Interactions": "تفاعلات المستخدمين",
     
     // Membership
     "Active": "نشط",
@@ -432,6 +521,8 @@ export const translations = {
     "Member Since": "عضو منذ",
     "Renewal Date": "تاريخ التجديد",
     "Officer memberships requiring renewal": "عضويات الضباط التي تتطلب التجديد",
+    "Members": "الأعضاء",
+    "Rank Distribution": "توزيع الرتب",
     
     // Human Resources
     "Role": "الدور",
@@ -449,6 +540,7 @@ export const translations = {
     "Reorder Level": "مستوى إعادة الطلب",
     "Inventory items requiring restock": "عناصر المخزون التي تتطلب إعادة التخزين",
     "Low Stock": "مخزون منخفض",
+    "Low Stock Items": "العناصر منخفضة المخزون",
     
     // Reports & Analytics
     "Report Type": "نوع التقرير",
@@ -466,6 +558,11 @@ export const translations = {
     "Pending": "معلق",
     "Completed": "مكتمل",
     "In Progress": "قيد التنفيذ",
+    "Placed": "تم الطلب",
+    "Preparing": "قيد التحضير",
+    "Ready": "جاهز",
+    "Delivered": "تم التسليم",
+    "Planned": "مخطط",
     
     // Data translations
     dataTranslations: {
@@ -510,6 +607,12 @@ export const translations = {
         "Caesar Salad": "سلطة سيزر",
         "Seafood Platter": "طبق المأكولات البحرية",
         "Rice and Curry": "أرز مع كاري",
+        "Water": "ماء",
+        "Soft Drink": "مشروب غازي",
+        "Arabic Coffee": "قهوة عربية",
+        "Tea": "شاي",
+        "Fruit Salad": "سلطة فواكه",
+        "Chocolate Cake": "كيك شوكولاتة"
       },
       // Dietary options
       dietary: {
@@ -522,7 +625,7 @@ export const translations = {
       // Event names
       events: {
         "Training Seminar": "ندوة تدريبية",
-        "Command Staff Meeting": "اجتماع ه��ئة القيادة",
+        "Command Staff Meeting": "اجتماع هيئة القيادة",
         "Annual Review": "المراجعة السنوية",
         "Security Briefing": "إحاطة أمنية",
         "Officer Promotion Ceremony": "حفل ترقية الضباط",

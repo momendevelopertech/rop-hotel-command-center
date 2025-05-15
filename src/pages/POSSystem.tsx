@@ -128,7 +128,6 @@ export default function POSSystem() {
     toast({
       title: t("Order Placed"),
       description: t("Your order has been sent to the kitchen"),
-      variant: "success",
     });
     
     // Reset order

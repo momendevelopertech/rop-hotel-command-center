@@ -24,8 +24,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     // Add RTL class to body for Tailwind RTL support
     if (language === "ar") {
       document.body.classList.add("rtl");
+      document.querySelector('.layout-container')?.classList.add('rtl-layout');
     } else {
       document.body.classList.remove("rtl");
+      document.querySelector('.layout-container')?.classList.remove('rtl-layout');
     }
     
     // Force re-render components when language changes

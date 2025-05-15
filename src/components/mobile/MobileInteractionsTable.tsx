@@ -1,39 +1,48 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useData } from "@/contexts/DataContext";
 import { DataTable } from "@/components/shared/DataTable";
 import { Button } from "@/components/ui/button";
 import { Eye, Smartphone } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useRopDataService } from "@/utils/ropDataService";
 
 interface MobileInteractionsTableProps {
   onSelectScreen: (screen: string) => void;
 }
 
 export function MobileInteractionsTable({ onSelectScreen }: MobileInteractionsTableProps) {
-  const { mobileInteractions } = useData();
+  const { mobileInteractions: originalInteractions } = useData();
+  const { t } = useLanguage();
+  const { translateMobileInteraction } = useRopDataService();
+  const [translatedInteractions, setTranslatedInteractions] = useState(originalInteractions);
+
+  useEffect(() => {
+    setTranslatedInteractions(originalInteractions.map(interaction => translateMobileInteraction(interaction)));
+  }, [originalInteractions, translateMobileInteraction]);
 
   const columns = [
     { 
-      header: "الضابط", 
+      header: t("Officer"), 
       accessor: "officer" 
     },
     { 
-      header: "الإجراء", 
+      header: t("Action"), 
       accessor: "action" 
     },
     { 
-      header: "الوقت", 
+      header: t("Time"), 
       accessor: "timestamp" 
     },
     { 
-      header: "الجهاز", 
+      header: t("Device"), 
       accessor: "device" 
     },
     { 
-      header: "معاينة", 
+      header: t("Preview"), 
       accessor: "action",
       cell: (item: any) => {
-        // تحويل نوع الإجراء إلى اسم الشاشة المناسبة
+        // Match action type to appropriate screen name
         const getScreenName = (action: string) => {
           if (action.includes("book") || action.includes("room")) return "rooms";
           if (action.includes("food") || action.includes("order") || action.includes("menu")) return "dining";
@@ -51,7 +60,7 @@ export function MobileInteractionsTable({ onSelectScreen }: MobileInteractionsTa
             onClick={() => onSelectScreen(screenName)}
           >
             <Eye className="mr-1 h-4 w-4" />
-            معاينة
+            {t("View")}
           </Button>
         );
       }
@@ -60,13 +69,13 @@ export function MobileInteractionsTable({ onSelectScreen }: MobileInteractionsTa
 
   return (
     <DataTable
-      title="تفاعلات المستخدمين"
-      data={mobileInteractions}
+      title={t("User Interactions")}
+      data={translatedInteractions}
       columns={columns}
       searchField="officer"
       actions={
         <Button size="sm" onClick={() => onSelectScreen("home")}>
-          <Smartphone className="mr-2 h-4 w-4" /> عرض التطبيق
+          <Smartphone className="mr-2 h-4 w-4" /> {t("App Preview")}
         </Button>
       }
     />
