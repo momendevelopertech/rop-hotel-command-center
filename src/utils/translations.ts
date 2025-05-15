@@ -154,6 +154,10 @@ export const translations = {
     "Create Report": "Create Report",
     "Recent Reports": "Recent Reports",
     "Export": "Export",
+    "Report Name": "Report Name",
+    "Category": "Category",
+    "Available Reports": "Available Reports",
+    "Download": "Download",
     
     // Status terms
     "Confirmed": "Confirmed",
@@ -168,6 +172,7 @@ export const translations = {
     "Ready": "Ready",
     "Delivered": "Delivered",
     "Planned": "Planned",
+    "Dining Orders": "Dining Orders",
     
     // Data translations
     dataTranslations: {
@@ -386,7 +391,12 @@ export const translations = {
         "Facility Usage": "Facility Usage",
         "Dining Analysis": "Dining Analysis",
         "Security Audit": "Security Audit",
-        "Revenue Forecast": "Revenue Forecast"
+        "Revenue Forecast": "Revenue Forecast",
+        "Monthly Revenue Report": "Monthly Revenue Report",
+        "Occupancy Report": "Occupancy Report",
+        "Restaurant Sales Report": "Restaurant Sales Report",
+        "New Guests Report": "New Guests Report",
+        "Monthly Performance Report": "Monthly Performance Report"
       }
     }
   },
@@ -489,7 +499,6 @@ export const translations = {
     "Total Attendance": "إجمالي الحضور",
     "Scheduled events and trainings": "الفعاليات والتدريبات المجدولة",
     "Calendar": "التقويم",
-    "Upcoming Events": "الفعاليات القادمة",
     
     // Finance & Reports
     "Total Revenue": "إجمالي الإيرادات",
@@ -538,7 +547,6 @@ export const translations = {
     "Reorder Level": "مستوى إعادة الطلب",
     "Inventory items requiring restock": "عناصر المخزون التي تتطلب إعادة التخزين",
     "Low Stock": "مخزون منخفض",
-    "Low Stock Items": "العناصر منخفضة المخزون",
     
     // Reports & Analytics
     "Report Type": "نوع التقرير",
@@ -547,6 +555,11 @@ export const translations = {
     "Create Report": "إنشاء تقرير",
     "Recent Reports": "التقارير الأخيرة",
     "Export": "تصدير",
+    "Report Name": "اسم التقرير",
+    "Category": "الفئة",
+    "Available Reports": "التقارير المتاحة",
+    "Download": "تنزيل",
+    "Dining Orders": "طلبات المطعم",
     
     // Status terms
     "Confirmed": "مؤكد",
@@ -726,7 +739,12 @@ export const translations = {
         "Security": "الأمن",
         "IT": "تكنولوجيا المعلومات",
         "Events": "الفعاليات",
-        "Human Resources": "الموارد البشرية"
+        "Human Resources": "الموارد البشرية",
+        "Rooms": "الغرف",
+        "Restaurant": "المطعم",
+        "Guests": "الضيوف",
+        "Management": "الإدارة",
+        "Finance": "المالية"
       },
       // Mobile app actions
       actions: {
@@ -779,8 +797,14 @@ export const translations = {
         "Facility Usage": "استخدام المرافق",
         "Dining Analysis": "تحليل الطعام",
         "Security Audit": "تدقيق أمني",
-        "Revenue Forecast": "توقعات الإيرادات"
+        "Revenue Forecast": "توقعات الإيرادات",
+        "Monthly Revenue Report": "تقرير الإيرادات الشهري",
+        "Occupancy Report": "تقرير الإشغال",
+        "Restaurant Sales Report": "تقرير مبيعات المطعم",
+        "New Guests Report": "تقرير الضيوف الجدد",
+        "Monthly Performance Report": "تقرير الأداء الشهري"
       }
     }
   }
 };
+
