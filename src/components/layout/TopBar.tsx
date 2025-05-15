@@ -2,7 +2,7 @@
 import React from "react";
 import { Menu, Bell, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Avatar } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -53,7 +53,8 @@ export function TopBar({ sidebarOpen, setSidebarOpen }: TopBarProps) {
           <DropdownMenu>
             <DropdownMenuTrigger className="flex items-center">
               <Avatar className="h-8 w-8 border-2 border-rop-gold">
-                <span className="font-medium text-xs">CO</span>
+                <AvatarImage src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?q=80&w=200&auto=format&fit=crop" alt="Captain Omar" />
+                <AvatarFallback className="font-medium text-xs">CO</AvatarFallback>
               </Avatar>
               <div className="ml-2 hidden md:block text-left">
                 <p className="text-sm font-medium">Captain Omar</p>
