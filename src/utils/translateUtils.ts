@@ -21,8 +21,10 @@ export function useTranslation() {
       
       // Translate each specified field using the appropriate category
       Object.entries(fields).forEach(([field, category]) => {
-        if (item[field]) {
-          translatedItem[field] = translate(item[field], category);
+        const fieldName = field as keyof T;
+        if (item[fieldName]) {
+          // Use type assertion to handle the generic indexing
+          translatedItem[fieldName] = translate(String(item[fieldName]), category) as any;
         }
       });
       
