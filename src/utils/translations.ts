@@ -98,7 +98,6 @@ export const translations = {
     "Total Attendance": "Total Attendance",
     "Scheduled events and trainings": "Scheduled events and trainings",
     "Calendar": "Calendar",
-    "Upcoming Events": "Upcoming Events",
     
     // Finance & Reports
     "Total Revenue": "Total Revenue",
@@ -147,7 +146,6 @@ export const translations = {
     "Reorder Level": "Reorder Level",
     "Inventory items requiring restock": "Inventory items requiring restock",
     "Low Stock": "Low Stock",
-    "Low Stock Items": "Low Stock Items",
     
     // Reports & Analytics
     "Report Type": "Report Type",
