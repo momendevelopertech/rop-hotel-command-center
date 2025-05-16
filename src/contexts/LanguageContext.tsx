@@ -1,88 +1,61 @@
-
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState } from "react";
+import { translations, translationKeys } from "@/utils/translations";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { translations } from "@/utils/translations";
 
-type LanguageContextType = {
+interface LanguageContextType {
   language: "en" | "ar";
-  setLanguage: (lang: "en" | "ar") => void;
+  setLanguage: React.Dispatch<React.SetStateAction<"en" | "ar">>;
   t: (key: string) => string;
+  translate: (key: string, category?: string) => string;
   dir: "ltr" | "rtl";
-  translate: (text: string, category?: string) => string;
-};
+}
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+const LanguageContext = createContext<LanguageContextType>({} as LanguageContextType);
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguage] = useLocalStorage<"en" | "ar">("language", "en");
+export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
+  const [language, setLanguage] = useLocalStorage<"en" | "ar">("rop-language", "en");
   
-  // Update document direction when language changes
-  useEffect(() => {
-    document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
-    document.documentElement.lang = language;
-    
-    // Add RTL class to body for Tailwind RTL support
-    if (language === "ar") {
-      document.body.classList.add("rtl");
-      document.querySelector('.layout-container')?.classList.add('rtl-layout');
-    } else {
-      document.body.classList.remove("rtl");
-      document.querySelector('.layout-container')?.classList.remove('rtl-layout');
-    }
-    
-    // Force re-render components when language changes
-    window.dispatchEvent(new Event('language-changed'));
-  }, [language]);
+  const dir = language === "ar" ? "rtl" : "ltr";
   
   // Simple translation function
   const t = (key: string): string => {
     if (!key) return "";
     
-    const translatedText = translations[language]?.[key];
-    return translatedText || key; // Fallback to key if translation not found
-  };
-  
-  // Function to translate data text based on category
-  const translate = (text: string, category = "general"): string => {
-    if (!text) return "";
+    // Get translated string from translations object
+    const translated = translations[language][key];
     
-    // Try to find a direct match in the translations
-    if (translations[language]?.[text]) {
-      return translations[language][text];
+    // If translation exists, return it, otherwise return the original key
+    if (translated) {
+      return typeof translated === 'string' ? translated : key;
     }
     
-    // If no direct match, look in the dataTranslations section
-    const categoryTranslations = translations[language]?.dataTranslations?.[category];
-    if (categoryTranslations?.[text]) {
-      return categoryTranslations[text];
-    }
-    
-    // Fallback to original text if no translation found
-    return text;
+    return key;
   };
   
-  // Explicitly type the dir variable as "ltr" | "rtl"
-  const dir: "ltr" | "rtl" = language === "ar" ? "rtl" : "ltr";
-  
-  const value: LanguageContextType = {
-    language,
-    setLanguage,
-    t,
-    dir,
-    translate
+  // Translation function that can handle categories
+  const translate = (key: string, category?: string): string => {
+    if (!key) return "";
+    
+    // If category is provided, look for translation in that category
+    if (category && translationKeys[language][category]) {
+      const categoryTranslations = translationKeys[language][category];
+      const translated = categoryTranslations && categoryTranslations[key];
+      if (translated && typeof translated === 'string') {
+        return translated;
+      }
+    }
+    
+    // Fallback to general translations
+    return t(key);
   };
   
   return (
-    <LanguageContext.Provider value={value}>
-      {children}
+    <LanguageContext.Provider value={{ language, setLanguage, t, translate, dir }}>
+      <div dir={dir} lang={language}>
+        {children}
+      </div>
     </LanguageContext.Provider>
   );
-}
-
-export const useLanguage = () => {
-  const context = useContext(LanguageContext);
-  if (context === undefined) {
-    throw new Error("useLanguage must be used within a LanguageProvider");
-  }
-  return context;
 };
+
+export const useLanguage = () => useContext(LanguageContext);

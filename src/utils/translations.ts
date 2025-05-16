@@ -1,294 +1,360 @@
+import { 
+  Booking, 
+  DiningOrder, 
+  InventoryItem, 
+  Event, 
+  Transaction, 
+  MobileInteraction, 
+  Membership, 
+  Employee, 
+  Report 
+} from "@/contexts/DataContext";
 
-// Define the structure of our translations
-export type TranslationCategory = {
-  [key: string]: string | { [subKey: string]: string };
+// Helper function to get random item from array
+const getRandomItem = <T>(array: T[]): T => {
+  return array[Math.floor(Math.random() * array.length)];
 };
 
-export type TranslationsType = {
-  en: TranslationCategory;
-  ar: TranslationCategory;
+// Helper function to generate random date between startDate and endDate
+const randomDate = (startDate: Date, endDate: Date): string => {
+  const start = startDate.getTime();
+  const end = endDate.getTime();
+  const randomTimestamp = start + Math.random() * (end - start);
+  return new Date(randomTimestamp).toISOString().split('T')[0];
 };
 
-// Create our translations object
-export const translations: TranslationsType = {
+// Helper to get random officer name
+const getRandomOfficerName = (): string => {
+  const firstNames = [
+    "Ali", "Mohammed", "Ahmed", "Fatma", "Saeed", 
+    "Khalid", "Omar", "Abdullah", "Hamad", "Salim",
+    "Nasser", "Ibrahim", "Hamdan", "Rashid", "Maryam"
+  ];
+  
+  const lastNames = [
+    "Al-Balushi", "Al-Busaidi", "Al-Harthi", "Al-Siyabi", 
+    "Al-Maskari", "Al-Raisi", "Al-Farsi", "Al-Habsi", 
+    "Al-Kindi", "Al-Zadjali"
+  ];
+  
+  return `${getRandomItem(firstNames)} ${getRandomItem(lastNames)}`;
+};
+
+export const generateMockData = () => {
+  // Generate bookings
+  const bookings: Booking[] = [];
+  const ranks = ["Cadet", "Officer", "Command"];
+  const roomTypes = ["Standard", "Premium", "Suite", "Executive Suite"];
+  const statuses = ["Confirmed", "Checked In", "Checked Out", "Cancelled"];
+  
+  for (let i = 1; i <= 50; i++) {
+    const rank = getRandomItem(ranks) as "Cadet" | "Officer" | "Command";
+    const checkIn = randomDate(new Date("2025-05-01"), new Date("2025-08-01"));
+    const checkOut = randomDate(new Date(checkIn), new Date("2025-09-01"));
+    
+    bookings.push({
+      id: i,
+      name: getRandomOfficerName(),
+      rank: rank,
+      room: getRandomItem(roomTypes),
+      checkIn: checkIn,
+      checkOut: checkOut,
+      status: getRandomItem(statuses),
+      emergencyFlag: Math.random() > 0.9,
+      notes: Math.random() > 0.7 ? "Special accommodation required" : undefined
+    });
+  }
+  
+  // Generate dining orders
+  const diningOrders: DiningOrder[] = [];
+  const meals = [
+    "Grilled Chicken", "Fish Curry", "Lamb Biryani", "Vegetable Pasta", 
+    "Beef Burger", "Caesar Salad", "Seafood Platter", "Rice and Curry"
+  ];
+  const dietaryOptions = ["Halal", "No restrictions", "Vegetarian", "Kosher", "Low sodium"];
+  const orderStatuses = ["Placed", "Preparing", "Ready", "Delivered", "Cancelled"];
+  
+  for (let i = 1; i <= 30; i++) {
+    diningOrders.push({
+      id: i,
+      name: getRandomOfficerName(),
+      meal: getRandomItem(meals),
+      dietary: getRandomItem(dietaryOptions),
+      status: getRandomItem(orderStatuses),
+      timestamp: randomDate(new Date("2025-05-01"), new Date("2025-05-14"))
+    });
+  }
+  
+  // Generate inventory items
+  const inventoryItems: InventoryItem[] = [];
+  const items = [
+    "Towels", "Bed sheets", "Pillows", "Rice", "Chicken", "Beef", "Fish",
+    "Toilet paper", "Soap", "Shampoo", "Water bottles", "Coffee", "Tea",
+    "Cleaning supplies", "Flour", "Sugar", "Salt", "Vegetables", "Fruits"
+  ];
+  const suppliers = [
+    "Oman Textiles", "Muscat Food Supplies", "Al Bahja Group", 
+    "Salalah Trading", "Gulf Hospitality Solutions", "Nizwa Consumables"
+  ];
+  const categories = ["Food", "Linen", "Toiletries", "Cleaning", "Kitchen", "Room amenities"];
+  
+  for (let i = 1; i <= 30; i++) {
+    inventoryItems.push({
+      id: i,
+      name: getRandomItem(items),
+      quantity: Math.floor(Math.random() * 200) + 10,
+      supplier: getRandomItem(suppliers),
+      category: getRandomItem(categories),
+      reorderLevel: Math.floor(Math.random() * 50) + 10
+    });
+  }
+  
+  // Generate events
+  const events: Event[] = [];
+  const eventNames = [
+    "Training Seminar", "Command Staff Meeting", "Annual Review", 
+    "Security Briefing", "Officer Promotion Ceremony", "Tactical Training",
+    "Police Academy Graduation", "International Security Conference", 
+    "Community Outreach Program", "Executive Retreat"
+  ];
+  const eventStatuses = ["Planned", "Confirmed", "In Progress", "Completed", "Cancelled"];
+  const locations = ["Main Hall", "Conference Room A", "Training Center", "Outdoor Court", "Executive Suite"];
+  
+  for (let i = 1; i <= 20; i++) {
+    events.push({
+      id: i,
+      name: getRandomItem(eventNames),
+      date: randomDate(new Date("2025-05-01"), new Date("2025-12-31")),
+      attendees: Math.floor(Math.random() * 100) + 10,
+      status: getRandomItem(eventStatuses),
+      location: getRandomItem(locations),
+      equipmentNeeds: Math.random() > 0.5 ? "Projector, Microphone, Secure Communication Devices" : undefined
+    });
+  }
+  
+  // Generate financial transactions
+  const transactions: Transaction[] = [];
+  const transactionTypes = [
+    "Salary Deduction", "Direct Payment", "Department Billing", 
+    "Training Fee", "Accommodation Charge", "Catering Service", "Facility Rental"
+  ];
+  const departments = [
+    "Training", "Operations", "Administration", "Intelligence", 
+    "Cybersecurity", "Community Policing", "Traffic", "Emergency Response"
+  ];
+  
+  for (let i = 1; i <= 40; i++) {
+    transactions.push({
+      id: i,
+      officer: getRandomOfficerName(),
+      amount: Math.floor(Math.random() * 500) + 50,
+      type: getRandomItem(transactionTypes),
+      department: getRandomItem(departments),
+      date: randomDate(new Date("2025-01-01"), new Date("2025-05-14"))
+    });
+  }
+  
+  // Generate mobile app interactions
+  const mobileInteractions: MobileInteraction[] = [];
+  const actions = [
+    "Booked Room", "Ordered Meal", "Checked in", "Checked out", 
+    "Updated Profile", "Viewed Statement", "Requested Assistance", 
+    "Registered for Event", "Submitted Feedback", "Renewed Membership"
+  ];
+  const devices = ["iPhone", "Samsung Galaxy", "Huawei", "iPad", "Android Tablet"];
+  
+  for (let i = 1; i <= 30; i++) {
+    mobileInteractions.push({
+      id: i,
+      officer: getRandomOfficerName(),
+      action: getRandomItem(actions),
+      timestamp: randomDate(new Date("2025-05-01"), new Date("2025-05-14")),
+      device: getRandomItem(devices)
+    });
+  }
+  
+  // Generate memberships
+  const memberships: Membership[] = [];
+  const membershipStatuses = ["Active", "Pending Renewal", "Expired", "Suspended"];
+  
+  for (let i = 1; i <= 50; i++) {
+    const rank = getRandomItem(ranks) as "Cadet" | "Officer" | "Command";
+    const memberSince = randomDate(new Date("2020-01-01"), new Date("2025-01-01"));
+    const renewal = randomDate(new Date("2025-06-01"), new Date("2026-06-01"));
+    
+    memberships.push({
+      id: i,
+      officer: getRandomOfficerName(),
+      rank: rank,
+      status: getRandomItem(membershipStatuses),
+      renewal: renewal,
+      memberSince: memberSince
+    });
+  }
+  
+  // Generate employees
+  const employees: Employee[] = [];
+  const roles = [
+    "Receptionist", "Chef", "Room Attendant", "Maintenance", "Security Officer", 
+    "Manager", "IT Support", "Administrative Assistant", "Event Coordinator"
+  ];
+  const departments1 = [
+    "Front Desk", "Food & Beverage", "Housekeeping", "Maintenance", 
+    "Security", "Administration", "IT", "Events", "Human Resources"
+  ];
+  const payrollStatuses = ["Paid", "Pending", "Processing", "Hold"];
+  
+  for (let i = 1; i <= 20; i++) {
+    employees.push({
+      id: i,
+      name: getRandomOfficerName(),
+      role: getRandomItem(roles),
+      attendance: `${80 + Math.floor(Math.random() * 20)}%`,
+      payroll: getRandomItem(payrollStatuses),
+      department: getRandomItem(departments1),
+      joinDate: randomDate(new Date("2020-01-01"), new Date("2025-01-01"))
+    });
+  }
+  
+  // Generate reports
+  const reports: Report[] = [];
+  const reportTypes = [
+    "Booking Trends", "Financial Summary", "Inventory Status", 
+    "Employee Performance", "Member Activity", "Event Summary", 
+    "Facility Usage", "Dining Analysis", "Security Audit", "Revenue Forecast"
+  ];
+  
+  for (let i = 1; i <= 10; i++) {
+    reports.push({
+      id: i,
+      type: getRandomItem(reportTypes),
+      date: randomDate(new Date("2025-04-01"), new Date("2025-05-14")),
+      data: {
+        total: Math.floor(Math.random() * 1000) + 100,
+        trend: Math.random() > 0.5 ? "up" : "down",
+        percentage: Math.floor(Math.random() * 100)
+      },
+      generatedBy: getRandomOfficerName()
+    });
+  }
+  
+  return {
+    bookings,
+    diningOrders,
+    inventoryItems,
+    events,
+    transactions,
+    mobileInteractions,
+    memberships,
+    employees,
+    reports
+  };
+};
+
+export const translationKeys = {
   en: {
-    // General UI translations
-    "Dashboard": "Dashboard",
-    "Guest Management": "Guest Management",
-    "Dining & Catering": "Dining & Catering",
-    "Event Management": "Event Management",
-    "Finance & Reports": "Finance & Reports",
-    "Mobile App": "Mobile App",
-    "Membership": "Membership",
-    "Human Resources": "Human Resources",
-    "Inventory": "Inventory",
-    "Reports & Analytics": "Reports & Analytics",
-    "POS": "POS System",
-
-    // Guest Management
-    "Room Booking": "Room Booking",
-    "Check-in / Check-out": "Check-in / Check-out",
-    "Guest Services": "Guest Services",
-    "Maintenance Requests": "Maintenance Requests",
-    "Billing & Payments": "Billing & Payments",
-    
-    // Dining & Catering
-    "Menu Management": "Menu Management",
-    "Table Reservations": "Table Reservations",
-    "Order Management": "Order Management",
-    "Kitchen Dispatch": "Kitchen Dispatch",
-    "Inventory Consumption": "Inventory Consumption",
-    
-    // Event Management
-    "Hall Booking": "Hall Booking",
-    "Catering Orders": "Catering Orders",
-    "Equipment Setup": "Equipment & Setup",
-    "Guest List Management": "Guest List Management",
-    "Event Billing": "Event Billing",
-    
-    // Finance & Reports
-    "Invoices & Payments": "Invoices & Payments",
-    "Expenses & Revenues": "Expenses & Revenues",
-    "Profit & Loss Reports": "Profit & Loss Reports",
-    "Tax Management": "Tax Management",
-    "Financial Audit Logs": "Financial Audit Logs",
-    
-    // Mobile App
-    "App Features": "App Features",
-    "Booking via App": "Booking via App",
-    "Order Tracking": "Order Tracking",
-    "Push Notifications": "Push Notifications",
-    
-    // Membership
-    "Member Registration": "Member Registration",
-    "Link Military ID": "Link Military ID",
-    "Card Printing": "Card Printing",
-    "Membership Renewals": "Membership Renewals",
-    "SMS Reminders": "SMS Reminders",
-    
-    // Human Resources
-    "Employee Records": "Employee Records",
-    "Attendance & Shifts": "Attendance & Shifts",
-    "Leaves & Requests": "Leaves & Requests",
-    "Payroll & Penalties": "Payroll & Penalties",
-    "Advances & Loans": "Advances & Loans",
-    
-    // Inventory
-    "Stock Overview": "Stock Overview",
-    "Item Transfers": "Item Transfers",
-    "Damaged/Returned Items": "Damaged/Returned Items",
-    "Low Stock Alerts": "Low Stock Alerts",
-    "Inventory Reports": "Inventory Reports",
-    
-    // Reports & Analytics
-    "Daily Reports": "Daily Reports",
-    "Monthly Summaries": "Monthly Summaries",
-    "Performance Dashboards": "Performance Dashboards",
-    "Custom Report Builder": "Custom Report Builder",
-    
-    // POS
-    "Sales Interface": "Sales Interface",
-    "Transaction History": "Transaction History",
-    "Refunds & Cancellations": "Refunds & Cancellations",
-    "Payment Methods": "Payment Methods",
-    "POS Settings": "POS Settings",
-    
-    // Common phrases
-    "Search...": "Search...",
-    "No data available": "No data available",
-    "Showing": "Showing",
-    "of": "of",
-    "entries": "entries",
-    "Previous": "Previous",
-    "Next": "Next",
-    "Save": "Save",
-    "Cancel": "Cancel",
-    "Delete": "Delete",
-    "Edit": "Edit",
-    "View": "View",
-    "Add New": "Add New",
-    "Status": "Status",
-    "Date": "Date",
-    "Actions": "Actions",
-    
-    // Status values
-    "Active": "Active",
-    "Inactive": "Inactive",
-    "Pending": "Pending",
-    "Completed": "Completed",
-    "Cancelled": "Cancelled",
-    "Confirmed": "Confirmed",
-    "In Progress": "In Progress",
-    "Checked In": "Checked In",
-    "Checked Out": "Checked Out",
-
-    // Guest Management content will be displayed here
-    "Guest services content will be displayed here": "Guest services content will be displayed here",
-    "Hall booking content will be displayed here": "Hall booking content will be displayed here",
-    "POS settings content will be displayed here": "POS settings content will be displayed here",
-
-    // Data categories for translation
-    dataTranslations: {
-      names: {
-        "Ali Al-Balushi": "Ali Al-Balushi",
-        "Mohammed Al-Busaidi": "Mohammed Al-Busaidi",
-        "Ahmed Al-Harthi": "Ahmed Al-Harthi",
-        "Fatma Al-Siyabi": "Fatma Al-Siyabi",
-        "Saeed Al-Maskari": "Saeed Al-Maskari"
-      },
-      rooms: {
-        "Standard": "Standard",
-        "Premium": "Premium",
-        "Suite": "Suite",
-        "Executive Suite": "Executive Suite"
-      },
-      status: {
-        "Reserved": "Reserved",
-        "Available": "Available",
-        "Occupied": "Occupied",
-        "Maintenance": "Maintenance",
-        "Cleaning": "Cleaning"
-      }
+    names: {
+      "Ali Al-Balushi": "Ali Al-Balushi",
+      "Mohammed Al-Busaidi": "Mohammed Al-Busaidi",
+      "Ahmed Al-Harthi": "Ahmed Al-Harthi",
+      "Fatma Al-Siyabi": "Fatma Al-Siyabi",
+      "Saeed Al-Maskari": "Saeed Al-Maskari",
+      "Khalid Al-Raisi": "Khalid Al-Raisi",
+      "Omar Al-Farsi": "Omar Al-Farsi",
+      "Abdullah Al-Habsi": "Abdullah Al-Habsi",
+      "Hamad Al-Kindi": "Hamad Al-Kindi",
+      "Salim Al-Zadjali": "Salim Al-Zadjali"
+    },
+    rooms: {
+      "Standard": "Standard",
+      "Premium": "Premium",
+      "Suite": "Suite",
+      "Executive Suite": "Executive Suite"
+    },
+    roomStatus: {
+      "Reserved": "Reserved",
+      "Available": "Available",
+      "Occupied": "Occupied",
+      "Maintenance": "Maintenance",
+      "Cleaning": "Cleaning"
     }
   },
   ar: {
-    // General UI translations
-    "Dashboard": "لوحة القيادة",
-    "Guest Management": "إدارة الضيوف",
-    "Dining & Catering": "المطعم والضيافة",
-    "Event Management": "إدارة الفعاليات",
-    "Finance & Reports": "المالية والتقارير",
-    "Mobile App": "تطبيق الهاتف",
-    "Membership": "العضويات",
-    "Human Resources": "الموارد البشرية",
-    "Inventory": "المخزون",
-    "Reports & Analytics": "التقارير والتحليلات",
-    "POS": "نقاط البيع",
-
-    // Guest Management
-    "Room Booking": "حجز الغرف",
-    "Check-in / Check-out": "تسجيل الدخول / الخروج",
-    "Guest Services": "خدمات الضيوف",
-    "Maintenance Requests": "طلبات الصيانة",
-    "Billing & Payments": "الفواتير والمدفوعات",
-    
-    // Dining & Catering
-    "Menu Management": "إدارة القوائم",
-    "Table Reservations": "حجز الطاولات",
-    "Order Management": "إدارة الطلبات",
-    "Kitchen Dispatch": "إرسال الطلبات للمطبخ",
-    "Inventory Consumption": "استهلاك المخزون",
-    
-    // Event Management
-    "Hall Booking": "حجز القاعات",
-    "Catering Orders": "طلبات التموين",
-    "Equipment Setup": "المعدات والتجهيز",
-    "Guest List Management": "إدارة قوائم الضيوف",
-    "Event Billing": "فواتير الفعاليات",
-    
-    // Finance & Reports
-    "Invoices & Payments": "الفواتير والمدفوعات",
-    "Expenses & Revenues": "المصروفات والإيرادات",
-    "Profit & Loss Reports": "تقارير الأرباح والخسائر",
-    "Tax Management": "إدارة الضرائب",
-    "Financial Audit Logs": "سجلات التدقيق المالي",
-    
-    // Mobile App
-    "App Features": "ميزات التطبيق",
-    "Booking via App": "الحجز عبر التطبيق",
-    "Order Tracking": "تتبع الطلبات",
-    "Push Notifications": "الإشعارات",
-    
-    // Membership
-    "Member Registration": "تسجيل الأعضاء",
-    "Link Military ID": "ربط الرقم العسكري",
-    "Card Printing": "طباعة البطاقات",
-    "Membership Renewals": "تجديد العضوية",
-    "SMS Reminders": "تذكير عبر الرسائل النصية",
-    
-    // Human Resources
-    "Employee Records": "ملفات الموظفين",
-    "Attendance & Shifts": "الحضور والانصراف",
-    "Leaves & Requests": "الإجازات والطلبات",
-    "Payroll & Penalties": "الرواتب والجزاءات",
-    "Advances & Loans": "السلف والقروض",
-    
-    // Inventory
-    "Stock Overview": "نظرة عامة على المخزون",
-    "Item Transfers": "تحويل الأصناف",
-    "Damaged/Returned Items": "الأصناف التالفة أو المرتجعة",
-    "Low Stock Alerts": "تنبيهات انخفاض الكمية",
-    "Inventory Reports": "تقارير المخزون",
-    
-    // Reports & Analytics
-    "Daily Reports": "التقارير اليومية",
-    "Monthly Summaries": "ملخصات شهرية",
-    "Performance Dashboards": "لوحات الأداء",
-    "Custom Report Builder": "بناء تقارير مخصصة",
-    
-    // POS
-    "Sales Interface": "واجهة المبيعات",
-    "Transaction History": "سجل العمليات",
-    "Refunds & Cancellations": "المرتجعات والإلغاءات",
-    "Payment Methods": "طرق الدفع",
-    "POS Settings": "إعدادات النظام",
-    
-    // Common phrases
-    "Search...": "بحث...",
-    "No data available": "لا توجد بيانات متاحة",
-    "Showing": "عرض",
-    "of": "من",
-    "entries": "مدخلات",
-    "Previous": "السابق",
-    "Next": "التالي",
-    "Save": "حفظ",
-    "Cancel": "إلغاء",
-    "Delete": "حذف",
-    "Edit": "تعديل",
-    "View": "عرض",
-    "Add New": "إضافة جديد",
-    "Status": "الحالة",
-    "Date": "التاريخ",
-    "Actions": "الإجراءات",
-    
-    // Status values
-    "Active": "نشط",
-    "Inactive": "غير نشط",
-    "Pending": "قيد الانتظار",
-    "Completed": "مكتمل",
-    "Cancelled": "ملغى",
-    "Confirmed": "مؤكد",
-    "In Progress": "قيد التنفيذ",
-    "Checked In": "تم تسجيل الدخول",
-    "Checked Out": "تم تسجيل الخروج",
-
-    // Guest Management content will be displayed here
-    "Guest services content will be displayed here": "سيتم عرض محتوى خدمات الضيوف هنا",
-    "Hall booking content will be displayed here": "سيتم عرض محتوى حجز القاعات هنا",
-    "POS settings content will be displayed here": "سيتم عرض محتوى إعدادات نقاط البيع هنا",
-
-    // Data categories for translation
-    dataTranslations: {
-      names: {
-        "Ali Al-Balushi": "علي البلوشي",
-        "Mohammed Al-Busaidi": "محمد البوسعيدي",
-        "Ahmed Al-Harthi": "أحمد الحارثي",
-        "Fatma Al-Siyabi": "فاطمة السيابي",
-        "Saeed Al-Maskari": "سعيد المسكري"
-      },
-      rooms: {
-        "Standard": "قياسية",
-        "Premium": "مميزة",
-        "Suite": "جناح",
-        "Executive Suite": "جناح تنفيذي"
-      },
-      status: {
-        "Reserved": "محجوز",
-        "Available": "متاح",
-        "Occupied": "مشغول",
-        "Maintenance": "صيانة",
-        "Cleaning": "تنظيف"
-      }
+    names: {
+      "Ali Al-Balushi": "علي البلوشي",
+      "Mohammed Al-Busaidi": "محمد البوسعيدي",
+      "Ahmed Al-Harthi": "أحمد الحارثي",
+      "Fatma Al-Siyabi": "فاطمة السيابي",
+      "Saeed Al-Maskari": "سعيد المسكري",
+      "Khalid Al-Raisi": "خالد الرايسي",
+      "Omar Al-Farsi": "عمر الفارسي",
+      "Abdullah Al-Habsi": "عبدالله الحبسي",
+      "Hamad Al-Kindi": "حمد الكندي",
+      "Salim Al-Zadjali": "سالم الزدجالي"
+    },
+    rooms: {
+      "Standard": "قياسي",
+      "Premium": "ممتاز",
+      "Suite": "جناح",
+      "Executive Suite": "جناح تنفيذي"
+    },
+    roomStatus: {
+      "Reserved": "محجوز",
+      "Available": "متاح",
+      "Occupied": "مشغول",
+      "Maintenance": "صيانة",
+      "Cleaning": "تنظيف"
     }
+  }
+};
+
+export const translations = {
+  en: {
+    "Dining & Catering": "Dining & Catering",
+    "Mess hall and catering orders in process": "Mess hall and catering orders in process",
+    "Order ID": "Order ID",
+    "Table": "Table",
+    "Server": "Server",
+    "Items": "Items",
+    "Total": "Total",
+    "Time": "Time",
+    "Status": "Status",
+    "Actions": "Actions",
+    "Accept": "Accept",
+    "Mark Ready": "Mark Ready",
+    "Deliver": "Deliver",
+    "Cancel": "Cancel",
+    "No orders found": "No orders found",
+    "Event Management": "Event Management",
+    "Organize and manage base events and facilities": "Organize and manage base events and facilities",
+    "Membership": "Membership",
+    "Manage memberships and access privileges": "Manage memberships and access privileges",
+    "Profile": "Profile",
+    "Details": "Details",
+    "No data found": "No data found"
+  },
+  ar: {
+    "Dining & Catering": "تناول الطعام والتموين",
+    "Mess hall and catering orders in process": "طلبات قاعة الطعام والتموين قيد المعالجة",
+    "Order ID": "معرف الطلب",
+    "Table": "طاولة",
+    "Server": "الخادم",
+    "Items": "العناصر",
+    "Total": "الإجمالي",
+    "Time": "الوقت",
+    "Status": "الحالة",
+    "Actions": "الإجراءات",
+    "Accept": "قبول",
+    "Mark Ready": "تحديد جاهز",
+    "Deliver": "تسليم",
+    "Cancel": "إلغاء",
+    "No orders found": "لم يتم العثور على طلبات",
+    "Event Management": "إدارة الفعاليات",
+    "Organize and manage base events and facilities": "تنظيم وإدارة الفعاليات والمرافق الأساسية",
+    "Membership": "العضوية",
+    "Manage memberships and access privileges": "إدارة العضويات وامتيازات الوصول",
+    "Profile": "الملف الشخصي",
+    "Details": "التفاصيل",
+    "No data found": "لا توجد بيانات"
   }
 };
