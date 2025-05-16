@@ -14,7 +14,8 @@ import {
   Users,
   Database,
   FileText,
-  Terminal
+  // Fix import for Terminal icon
+  ShoppingCart
 } from "lucide-react";
 
 interface SidebarProps {
@@ -164,7 +165,7 @@ export function Sidebar({ open }: SidebarProps) {
       title: "POS", 
       titleAr: "نقاط البيع",
       href: "/pos", 
-      icon: Terminal,
+      icon: ShoppingCart, // Replace Terminal with ShoppingCart for POS icon
       subItems: [
         { title: "Sales Interface", titleAr: "واجهة المبيعات", href: "/pos/sales" },
         { title: "Transaction History", titleAr: "سجل العمليات", href: "/pos/transactions" },
