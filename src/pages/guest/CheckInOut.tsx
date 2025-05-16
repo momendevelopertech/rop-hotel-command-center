@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { SubPageLayout } from "@/components/shared/SubPageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DataTable } from "@/components/shared/DataTable";
+import { DataTable, Column } from "@/components/shared/DataTable";
 import { StatusBadge } from "@/components/shared/StatusBadge";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Input } from "@/components/ui/input";
@@ -132,7 +132,7 @@ export default function CheckInOut() {
   };
   
   // Define columns for the tables
-  const columns = [
+  const columns: Column<GuestCheckStatus>[] = [
     { header: "ID", accessor: "bookingId" },
     { header: "Officer", accessor: "officerName" },
     { header: "Rank", accessor: "officerRank" },
