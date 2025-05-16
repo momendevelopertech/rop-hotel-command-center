@@ -264,51 +264,54 @@ export default function GuestServices() {
           </Tabs>
         </CardHeader>
         <CardContent className="pt-6">
-          <TabsContent value="all" className="mt-0">
-            <DataTable
-              data={filteredServices}
-              columns={columns}
-              searchField="guestName"
-              actions={
-                <Button variant="default">{t("New Service Request")}</Button>
-              }
-            />
-          </TabsContent>
-          
-          <TabsContent value="pending" className="mt-0">
-            <DataTable
-              data={filteredServices}
-              columns={columns}
-              searchField="guestName"
-              actions={
-                <Button variant="default">{t("New Service Request")}</Button>
-              }
-            />
-          </TabsContent>
-          
-          <TabsContent value="in-progress" className="mt-0">
-            <DataTable
-              data={filteredServices}
-              columns={columns}
-              searchField="guestName"
-            />
-          </TabsContent>
-          
-          <TabsContent value="scheduled" className="mt-0">
-            <DataTable
-              data={filteredServices}
-              columns={columns}
-              searchField="guestName"
-            />
-          </TabsContent>
-          
-          <TabsContent value="completed" className="mt-0">
-            <DataTable
-              data={filteredServices}
-              columns={columns}
-              searchField="guestName"
-            />
-          </TabsContent>
+          {/* Wrap all TabsContent elements in a Tabs component with the same value as the parent Tabs */}
+          <Tabs value={activeTab}>
+            <TabsContent value="all" className="mt-0">
+              <DataTable
+                data={filteredServices}
+                columns={columns}
+                searchField="guestName"
+                actions={
+                  <Button variant="default">{t("New Service Request")}</Button>
+                }
+              />
+            </TabsContent>
+            
+            <TabsContent value="pending" className="mt-0">
+              <DataTable
+                data={filteredServices}
+                columns={columns}
+                searchField="guestName"
+                actions={
+                  <Button variant="default">{t("New Service Request")}</Button>
+                }
+              />
+            </TabsContent>
+            
+            <TabsContent value="in-progress" className="mt-0">
+              <DataTable
+                data={filteredServices}
+                columns={columns}
+                searchField="guestName"
+              />
+            </TabsContent>
+            
+            <TabsContent value="scheduled" className="mt-0">
+              <DataTable
+                data={filteredServices}
+                columns={columns}
+                searchField="guestName"
+              />
+            </TabsContent>
+            
+            <TabsContent value="completed" className="mt-0">
+              <DataTable
+                data={filteredServices}
+                columns={columns}
+                searchField="guestName"
+              />
+            </TabsContent>
+          </Tabs>
         </CardContent>
       </Card>
     </SubPageLayout>

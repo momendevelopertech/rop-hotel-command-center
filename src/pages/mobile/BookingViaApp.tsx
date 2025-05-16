@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { DataTable } from "@/components/shared/DataTable";
+import { DataTable, Column } from "@/components/shared/DataTable";
 import { StatusBadge } from "@/components/shared/StatusBadge";
 
 // Booking app activity interface
@@ -94,8 +94,8 @@ export default function BookingViaApp() {
   const { t, language } = useLanguage();
   const [activeScreen, setActiveScreen] = React.useState<string>("booking");
   
-  // Table columns
-  const columns = [
+  // Table columns - fix the accessor to use proper types
+  const columns: Column<BookingActivity>[] = [
     { header: "ID", accessor: "id" },
     { header: "Officer", accessor: "officerName" },
     { header: "Rank", accessor: "officerRank" },

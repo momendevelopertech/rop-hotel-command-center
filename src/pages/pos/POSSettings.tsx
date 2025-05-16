@@ -8,11 +8,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Terminal, Printer, Receipt, CreditCard } from "lucide-react";
 
 export default function POSSettings() {
   const { t } = useLanguage();
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState<string>("general");
   
   // Mock settings data

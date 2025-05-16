@@ -36,9 +36,20 @@ export function DataTable<T = any>({
   // Filter data based on search query
   const filteredData = searchQuery && searchField
     ? data.filter(item => {
-        const value = typeof searchField === 'string'
-          ? String(item[searchField as keyof T] || '')
-          : String(item[searchField] || '');
+        let value: string;
+        if (typeof searchField === 'string') {
+          // Handle string accessors safely by explicitly checking if it exists as a key
+          const key = searchField as keyof T;
+          // Check if the key exists in the item
+          if (Object.prototype.hasOwnProperty.call(item, key)) {
+            value = String(item[key] || '');
+          } else {
+            // If the key doesn't exist, return false to filter out this item
+            return false;
+          }
+        } else {
+          value = String(item[searchField as keyof T] || '');
+        }
         return value.toLowerCase().includes(searchQuery.toLowerCase());
       })
     : data;

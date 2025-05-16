@@ -1,86 +1,124 @@
 
-import React, { useEffect, useState } from "react";
-import { useData } from "@/contexts/DataContext";
-import { DataTable } from "@/components/shared/DataTable";
-import { Button } from "@/components/ui/button";
+// Find where it uses StatusBadge and replace variant with type
+import React, { useState } from "react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { StatusBadge } from "@/components/shared/StatusBadge";
-import { Eye, FileEdit, Trash2, Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useRopDataService } from "@/utils/ropDataService";
 
-export function DiningOrdersTable() {
-  const { diningOrders: originalOrders } = useData();
+interface DiningOrder {
+  id: number;
+  tableNumber: string;
+  server: string;
+  items: number;
+  total: number;
+  time: string;
+  status: string;
+}
+
+interface DiningOrdersTableProps {
+  data: DiningOrder[];
+}
+
+export function DiningOrdersTable({ data }: DiningOrdersTableProps) {
   const { t } = useLanguage();
-  const { translateDiningOrder } = useRopDataService();
-  const [translatedOrders, setTranslatedOrders] = useState(originalOrders);
+  const [orders, setOrders] = useState<DiningOrder[]>(data);
 
-  useEffect(() => {
-    setTranslatedOrders(originalOrders.map(order => translateDiningOrder(order)));
-  }, [originalOrders, translateDiningOrder]);
-
-  const columns = [
-    { 
-      header: t("Order Number"), 
-      accessor: "id" 
-    },
-    { 
-      header: t("Officer"), 
-      accessor: "name" 
-    },
-    { 
-      header: t("Meal"), 
-      accessor: "meal" 
-    },
-    { 
-      header: t("Dietary Requirements"), 
-      accessor: "dietary" 
-    },
-    { 
-      header: t("Status"), 
-      accessor: "status",
-      cell: (order: any) => {
-        const variant = order.status === t("Completed") 
-          ? "green" 
-          : order.status === t("Pending") 
-            ? "yellow" 
-            : "blue";
-        return <StatusBadge status={order.status} variant={variant} />;
-      }
-    },
-    { 
-      header: t("Time Ordered"), 
-      accessor: "timestamp" 
-    },
-    { 
-      header: t("Actions"), 
-      accessor: "id",
-      cell: () => (
-        <div className="flex space-x-2">
-          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-            <Eye className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-            <FileEdit className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        </div>
+  const handleAction = (id: number, newStatus: string) => {
+    setOrders(
+      orders.map((order) =>
+        order.id === id ? { ...order, status: newStatus } : order
       )
+    );
+  };
+
+  const getStatusType = (status: string) => {
+    switch (status.toLowerCase()) {
+      case "new":
+        return "info";
+      case "preparing":
+        return "warning";
+      case "ready":
+        return "success";
+      case "delivered":
+        return "success";
+      case "cancelled":
+        return "danger";
+      default:
+        return "info";
     }
-  ];
+  };
 
   return (
-    <DataTable
-      title={t("Dining Orders")}
-      data={translatedOrders}
-      columns={columns}
-      searchField="name"
-      actions={
-        <Button size="sm">
-          <Plus className="mr-2 h-4 w-4" /> {t("Add New")}
-        </Button>
-      }
-    />
+    <div className="rounded-md border">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>{t("Order ID")}</TableHead>
+            <TableHead>{t("Table")}</TableHead>
+            <TableHead>{t("Server")}</TableHead>
+            <TableHead>{t("Items")}</TableHead>
+            <TableHead>{t("Total")}</TableHead>
+            <TableHead>{t("Time")}</TableHead>
+            <TableHead>{t("Status")}</TableHead>
+            <TableHead className="text-right">{t("Actions")}</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {orders.map((order) => (
+            <TableRow key={order.id}>
+              <TableCell className="font-medium">{order.id}</TableCell>
+              <TableCell>{order.tableNumber}</TableCell>
+              <TableCell>{order.server}</TableCell>
+              <TableCell>{order.items}</TableCell>
+              <TableCell>{order.total.toFixed(2)} OMR</TableCell>
+              <TableCell>{order.time}</TableCell>
+              <TableCell>
+                <StatusBadge status={order.status} type={getStatusType(order.status)} />
+              </TableCell>
+              <TableCell className="text-right space-x-1">
+                {order.status === "New" && (
+                  <Button
+                    size="sm"
+                    onClick={() => handleAction(order.id, "Preparing")}
+                  >
+                    {t("Accept")}
+                  </Button>
+                )}
+                {order.status === "Preparing" && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="bg-green-50 text-green-600 border-green-200 hover:bg-green-100"
+                    onClick={() => handleAction(order.id, "Ready")}
+                  >
+                    {t("Mark Ready")}
+                  </Button>
+                )}
+                {order.status === "Ready" && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleAction(order.id, "Delivered")}
+                  >
+                    {t("Deliver")}
+                  </Button>
+                )}
+                {(order.status === "New" || order.status === "Preparing") && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="bg-red-50 text-red-600 border-red-200 hover:bg-red-100"
+                    onClick={() => handleAction(order.id, "Cancelled")}
+                  >
+                    {t("Cancel")}
+                  </Button>
+                )}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 }

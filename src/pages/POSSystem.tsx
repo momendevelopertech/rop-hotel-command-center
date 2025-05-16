@@ -6,7 +6,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Plus, Minus, Printer, CreditCard, Check } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -97,11 +97,6 @@ export default function POSSystem() {
     ).filter(item => item.quantity > 0));
   };
 
-  // Remove item from order
-  const removeFromOrder = (id: number) => {
-    setCurrentOrder(currentOrder.filter(item => item.id !== id));
-  };
-
   // Calculate total
   const calculateTotal = () => {
     return currentOrder.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2);
@@ -168,33 +163,109 @@ export default function POSSystem() {
                   <TabsTrigger value="dessert">{t("Desserts")}</TabsTrigger>
                 </TabsList>
                 
-                {["main", "appetizer", "beverages", "dessert"].map(category => (
-                  <TabsContent value={category} key={category}>
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
-                      {menuItems
-                        .filter(item => item.category === category)
-                        .map(item => (
-                          <Card key={item.id} className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => addToOrder(item)}>
-                            <CardContent className="p-3">
-                              <div className="mb-2 overflow-hidden rounded-md">
-                                <AspectRatio ratio={16 / 9}>
-                                  <img 
-                                    src={item.image} 
-                                    alt={translate(item.name, "meals")} 
-                                    className="w-full h-full object-cover rounded"
-                                  />
-                                </AspectRatio>
-                              </div>
-                              <div className="mt-2">
-                                <p className="font-medium">{translate(item.name, "meals")}</p>
-                                <p className="text-sm text-gray-600">{item.price.toFixed(2)} OMR</p>
-                              </div>
-                            </CardContent>
-                          </Card>
-                        ))}
-                    </div>
-                  </TabsContent>
-                ))}
+                <TabsContent value="main" className="space-y-4">
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+                    {menuItems
+                      .filter(item => item.category === "main")
+                      .map(item => (
+                        <Card key={item.id} className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => addToOrder(item)}>
+                          <CardContent className="p-3">
+                            <div className="mb-2 overflow-hidden rounded-md">
+                              <AspectRatio ratio={16 / 9}>
+                                <img 
+                                  src={item.image} 
+                                  alt={translate(item.name, "meals")} 
+                                  className="w-full h-full object-cover rounded"
+                                />
+                              </AspectRatio>
+                            </div>
+                            <div className="mt-2">
+                              <p className="font-medium">{translate(item.name, "meals")}</p>
+                              <p className="text-sm text-gray-600">{item.price.toFixed(2)} OMR</p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="appetizer" className="space-y-4">
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+                    {menuItems
+                      .filter(item => item.category === "appetizer")
+                      .map(item => (
+                        <Card key={item.id} className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => addToOrder(item)}>
+                          <CardContent className="p-3">
+                            <div className="mb-2 overflow-hidden rounded-md">
+                              <AspectRatio ratio={16 / 9}>
+                                <img 
+                                  src={item.image} 
+                                  alt={translate(item.name, "meals")} 
+                                  className="w-full h-full object-cover rounded"
+                                />
+                              </AspectRatio>
+                            </div>
+                            <div className="mt-2">
+                              <p className="font-medium">{translate(item.name, "meals")}</p>
+                              <p className="text-sm text-gray-600">{item.price.toFixed(2)} OMR</p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="beverages" className="space-y-4">
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+                    {menuItems
+                      .filter(item => item.category === "beverages")
+                      .map(item => (
+                        <Card key={item.id} className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => addToOrder(item)}>
+                          <CardContent className="p-3">
+                            <div className="mb-2 overflow-hidden rounded-md">
+                              <AspectRatio ratio={16 / 9}>
+                                <img 
+                                  src={item.image} 
+                                  alt={translate(item.name, "meals")} 
+                                  className="w-full h-full object-cover rounded"
+                                />
+                              </AspectRatio>
+                            </div>
+                            <div className="mt-2">
+                              <p className="font-medium">{translate(item.name, "meals")}</p>
+                              <p className="text-sm text-gray-600">{item.price.toFixed(2)} OMR</p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="dessert" className="space-y-4">
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+                    {menuItems
+                      .filter(item => item.category === "dessert")
+                      .map(item => (
+                        <Card key={item.id} className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => addToOrder(item)}>
+                          <CardContent className="p-3">
+                            <div className="mb-2 overflow-hidden rounded-md">
+                              <AspectRatio ratio={16 / 9}>
+                                <img 
+                                  src={item.image} 
+                                  alt={translate(item.name, "meals")} 
+                                  className="w-full h-full object-cover rounded"
+                                />
+                              </AspectRatio>
+                            </div>
+                            <div className="mt-2">
+                              <p className="font-medium">{translate(item.name, "meals")}</p>
+                              <p className="text-sm text-gray-600">{item.price.toFixed(2)} OMR</p>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                  </div>
+                </TabsContent>
               </Tabs>
             </CardContent>
           </Card>

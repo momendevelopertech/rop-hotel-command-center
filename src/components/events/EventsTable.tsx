@@ -1,83 +1,87 @@
 
+// Find where it uses StatusBadge and replace variant with type
 import React from "react";
-import { useData } from "@/contexts/DataContext";
-import { DataTable } from "@/components/shared/DataTable";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/shared/StatusBadge";
-import { Plus, Eye, FileEdit, Trash2 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useRopDataService } from "@/utils/ropDataService";
-import { useEffect, useState } from "react";
 
-export function EventsTable() {
-  const { events: originalEvents } = useData();
+interface Event {
+  id: number;
+  title: string;
+  type: string;
+  date: string;
+  time: string;
+  location: string;
+  attendees: number;
+  status: string;
+  organizer: string;
+}
+
+interface EventsTableProps {
+  data: Event[];
+}
+
+export function EventsTable({ data }: EventsTableProps) {
   const { t } = useLanguage();
-  const { translateEvent } = useRopDataService();
-  const [translatedEvents, setTranslatedEvents] = useState(originalEvents);
 
-  useEffect(() => {
-    setTranslatedEvents(originalEvents.map(event => translateEvent(event)));
-  }, [originalEvents, translateEvent]);
-
-  const columns = [
-    { 
-      header: t("Event Name"), 
-      accessor: "name" 
-    },
-    { 
-      header: t("Date"), 
-      accessor: "date" 
-    },
-    { 
-      header: t("Attendees"), 
-      accessor: "attendees" 
-    },
-    { 
-      header: t("Location"), 
-      accessor: "location" 
-    },
-    { 
-      header: t("Status"), 
-      accessor: "status",
-      cell: (event: any) => {
-        const variant = event.status === t("Completed") 
-          ? "green" 
-          : event.status === t("Upcoming") 
-            ? "blue" 
-            : "yellow";
-        return <StatusBadge status={event.status} variant={variant} />;
-      }
-    },
-    { 
-      header: t("Actions"), 
-      accessor: "id",
-      cell: () => (
-        <div className="flex space-x-2">
-          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-            <Eye className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-            <FileEdit className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        </div>
-      )
+  const getStatusType = (status: string) => {
+    switch (status.toLowerCase()) {
+      case "upcoming":
+        return "info";
+      case "in progress":
+        return "warning";
+      case "completed":
+        return "success";
+      case "cancelled":
+        return "danger";
+      default:
+        return "info";
     }
-  ];
+  };
 
   return (
-    <DataTable
-      title={t("Upcoming Events")}
-      data={translatedEvents}
-      columns={columns}
-      searchField="name"
-      actions={
-        <Button size="sm">
-          <Plus className="mr-2 h-4 w-4" /> {t("Add New")}
-        </Button>
-      }
-    />
+    <div className="rounded-md border">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[80px]">{t("ID")}</TableHead>
+            <TableHead>{t("Event")}</TableHead>
+            <TableHead>{t("Date")}</TableHead>
+            <TableHead>{t("Location")}</TableHead>
+            <TableHead>{t("Status")}</TableHead>
+            <TableHead className="text-right">{t("Actions")}</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {data.map((event) => (
+            <TableRow key={event.id}>
+              <TableCell className="font-medium">{event.id}</TableCell>
+              <TableCell>
+                <div>
+                  <p className="font-medium">{event.title}</p>
+                  <p className="text-sm text-gray-500">{event.type}</p>
+                </div>
+              </TableCell>
+              <TableCell>
+                <div>
+                  <p>{event.date}</p>
+                  <p className="text-sm text-gray-500">{event.time}</p>
+                </div>
+              </TableCell>
+              <TableCell>{event.location}</TableCell>
+              <TableCell>
+                <StatusBadge status={event.status} type={getStatusType(event.status)} />
+              </TableCell>
+              <TableCell className="text-right">
+                <Button size="sm" variant="outline">
+                  {t("Details")}
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 }

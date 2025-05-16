@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { SubPageLayout } from "@/components/shared/SubPageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -297,6 +296,7 @@ export default function CheckInOut() {
       {/* Main tabs */}
       <Card>
         <CardHeader className="pb-0">
+          <CardTitle>{t("Check-in / Check-out Management")}</CardTitle>
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList>
               <TabsTrigger value="arrivals">{t("Today's Arrivals")}</TabsTrigger>
@@ -307,41 +307,43 @@ export default function CheckInOut() {
           </Tabs>
         </CardHeader>
         <CardContent className="pt-6">
-          <TabsContent value="arrivals">
-            <DataTable
-              data={mockGuestCheckStatus.filter(guest => 
-                guest.status === "Expected Today" || guest.checkInDate === "2025-05-15"
-              )}
-              columns={columns}
-              showHeader={false}
-            />
-          </TabsContent>
-          
-          <TabsContent value="departures">
-            <DataTable
-              data={mockGuestCheckStatus.filter(guest => 
-                guest.status === "Checkout Today" || guest.checkOutDate === "2025-05-15"
-              )}
-              columns={columns}
-              showHeader={false}
-            />
-          </TabsContent>
-          
-          <TabsContent value="stayed">
-            <DataTable
-              data={mockGuestCheckStatus.filter(guest => guest.status === "Checked In")}
-              columns={columns}
-              showHeader={false}
-            />
-          </TabsContent>
-          
-          <TabsContent value="history">
-            <DataTable
-              data={mockGuestCheckStatus.filter(guest => guest.status === "Checked Out")}
-              columns={columns}
-              showHeader={false}
-            />
-          </TabsContent>
+          <Tabs value={activeTab}>
+            <TabsContent value="arrivals">
+              <DataTable
+                data={mockGuestCheckStatus.filter(guest => 
+                  guest.status === "Expected Today" || guest.checkInDate === "2025-05-15"
+                )}
+                columns={columns}
+                showHeader={false}
+              />
+            </TabsContent>
+            
+            <TabsContent value="departures">
+              <DataTable
+                data={mockGuestCheckStatus.filter(guest => 
+                  guest.status === "Checkout Today" || guest.checkOutDate === "2025-05-15"
+                )}
+                columns={columns}
+                showHeader={false}
+              />
+            </TabsContent>
+            
+            <TabsContent value="stayed">
+              <DataTable
+                data={mockGuestCheckStatus.filter(guest => guest.status === "Checked In")}
+                columns={columns}
+                showHeader={false}
+              />
+            </TabsContent>
+            
+            <TabsContent value="history">
+              <DataTable
+                data={mockGuestCheckStatus.filter(guest => guest.status === "Checked Out")}
+                columns={columns}
+                showHeader={false}
+              />
+            </TabsContent>
+          </Tabs>
         </CardContent>
       </Card>
     </SubPageLayout>

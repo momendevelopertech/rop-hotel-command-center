@@ -1,13 +1,10 @@
-
 import React, { useState, useEffect } from "react";
 import { SubPageLayout } from "@/components/shared/SubPageLayout";
 import { DataTable, Column } from "@/components/shared/DataTable";
-import { useData } from "@/contexts/DataContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { StatusBadge } from "@/components/shared/StatusBadge";
 import { StyledAddButton } from "@/components/shared/StyledAddButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useRopDataService } from "@/utils/ropDataService";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar } from "lucide-react";
 
@@ -136,7 +133,6 @@ const roomStats: RoomStats = {
 
 export default function RoomBooking() {
   const { t } = useLanguage();
-  const { translateBooking } = useRopDataService();
   const [activeTab, setActiveTab] = useState<string>("upcoming");
   const [bookings, setBookings] = useState<RoomBooking[]>(mockRoomBookings);
 

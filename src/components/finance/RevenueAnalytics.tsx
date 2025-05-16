@@ -31,6 +31,7 @@ export function RevenueAnalytics() {
             <TabsTrigger value="monthly">شهري</TabsTrigger>
             <TabsTrigger value="quarterly">ربع سنوي</TabsTrigger>
           </TabsList>
+          
           <TabsContent value="monthly" className="space-y-4">
             <ResponsiveContainer width="100%" height={350}>
               <BarChart
