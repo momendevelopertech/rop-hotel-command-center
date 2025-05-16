@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { generateMockData } from "@/utils/mockData";
@@ -27,6 +26,7 @@ export interface DiningOrder {
   dietary: string;
   status: string;
   timestamp: string;
+  items?: Array<{ name: string; quantity: number }>;  // Add items property
 }
 
 export interface InventoryItem {
@@ -46,6 +46,8 @@ export interface Event {
   status: string;
   location: string;
   equipmentNeeds?: string;
+  time?: string;             // Add time property
+  organizer?: string;        // Add organizer property
 }
 
 export interface Transaction {

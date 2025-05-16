@@ -37,7 +37,7 @@ export default function DiningCatering() {
         ? order.name 
         : `${language === "ar" ? "منضدة" : "Table"} ${orderId % 20 + 1}`,
       server: order.name,
-      items: order.items?.length || Math.floor(Math.random() * 5) + 1,
+      items: order.items ? order.items.length : Math.floor(Math.random() * 5) + 1,
       total: parseFloat((Math.random() * 25 + 5).toFixed(2)),
       time: order.timestamp,
       status: order.status
