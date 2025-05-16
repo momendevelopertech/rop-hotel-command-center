@@ -1,178 +1,250 @@
 
-import React, { useState } from "react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
-import { cn } from "@/lib/utils";
+import React, { useState, useMemo } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { StatusBadge } from './StatusBadge';
+import { Search } from 'lucide-react';
 
-interface Column<T> {
+// Define the column type
+export type Column<T> = {
   header: string;
   accessor: keyof T | ((item: T) => any);
   cell?: (item: T) => React.ReactNode;
-}
+  searchable?: boolean;
+  sortable?: boolean;
+};
 
-interface DataTableProps<T> {
+interface DataTableProps<T extends Record<string, any>> {
   data: T[];
   columns: Column<T>[];
   title?: string;
-  searchField?: keyof T;
-  actions?: React.ReactNode;
-  emptyMessage?: string;
+  searchField?: keyof T | string;
+  pageSize?: number;
+  className?: string;
+  showHeader?: boolean;
 }
 
-export function DataTable<T extends object>({
+export function DataTable<T extends Record<string, any>>({
   data,
   columns,
   title,
   searchField,
-  actions,
-  emptyMessage = "No data available"
+  pageSize = 10,
+  className,
+  showHeader = true,
 }: DataTableProps<T>) {
-  const [searchTerm, setSearchTerm] = useState("");
+  const { t, dir } = useLanguage();
+  const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const [sortConfig, setSortConfig] = useState<{
+    key: keyof T | null;
+    direction: 'ascending' | 'descending';
+  }>({ key: null, direction: 'ascending' });
 
-  // Filter data based on search term
-  const filteredData = searchField
-    ? data.filter((item) => {
-        const value = item[searchField];
-        return typeof value === "string" && value.toLowerCase().includes(searchTerm.toLowerCase());
-      })
-    : data;
+  // Filter data based on search query
+  const filteredData = useMemo(() => {
+    if (!searchQuery || !searchField) return data;
+    
+    return data.filter(item => {
+      const fieldValue = searchField === 'status'
+        ? t(item[searchField] as string)
+        : typeof searchField === 'string' && typeof item[searchField as keyof T] === 'string'
+          ? String(item[searchField as keyof T]).toLowerCase()
+          : String(item[searchField as keyof T]);
+      
+      return fieldValue.toLowerCase().includes(searchQuery.toLowerCase());
+    });
+  }, [data, searchQuery, searchField, t]);
+
+  // Sort data
+  const sortedData = useMemo(() => {
+    const sortableData = [...filteredData];
+    if (sortConfig.key) {
+      sortableData.sort((a, b) => {
+        const aValue = a[sortConfig.key as keyof T];
+        const bValue = b[sortConfig.key as keyof T];
+        
+        if (aValue < bValue) {
+          return sortConfig.direction === 'ascending' ? -1 : 1;
+        }
+        if (aValue > bValue) {
+          return sortConfig.direction === 'ascending' ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortableData;
+  }, [filteredData, sortConfig]);
 
   // Paginate data
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedData = filteredData.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedData = useMemo(() => {
+    const startIndex = (currentPage - 1) * pageSize;
+    return sortedData.slice(startIndex, startIndex + pageSize);
+  }, [sortedData, currentPage, pageSize]);
 
-  // Get cell value based on accessor (string or function)
-  const getCellValue = (item: T, accessor: keyof T | ((item: T) => any)) => {
-    if (typeof accessor === "function") {
+  // Handle sorting
+  const handleSort = (key: keyof T) => {
+    if (sortConfig.key === key) {
+      setSortConfig({
+        key,
+        direction: sortConfig.direction === 'ascending' ? 'descending' : 'ascending',
+      });
+    } else {
+      setSortConfig({ key, direction: 'ascending' });
+    }
+  };
+
+  // Get cell value
+  const getCellValue = (item: T, column: Column<T>) => {
+    const accessor = column.accessor;
+    
+    if (column.cell) {
+      return column.cell(item);
+    }
+    
+    // If accessor is a function
+    if (typeof accessor === 'function') {
       return accessor(item);
     }
+    
+    // If accessor is a property key and the value is a string that needs translation
+    if (accessor === 'status' && typeof item[accessor] === 'string') {
+      return <StatusBadge status={item[accessor] as string} />;
+    }
+    
     return item[accessor];
   };
 
-  return (
-    <Card className="p-0 shadow-sm border border-border">
-      {(title || searchField || actions) && (
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center p-4 border-b border-border">
-          {title && <h2 className="font-medium text-lg mb-3 md:mb-0">{title}</h2>}
-          
-          <div className="flex flex-col md:flex-row w-full md:w-auto gap-3">
-            {searchField && (
-              <div className="relative w-full md:w-64">
-                <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search..."
-                  value={searchTerm}
-                  onChange={(e) => {
-                    setSearchTerm(e.target.value);
-                    setCurrentPage(1); // Reset to first page on search
-                  }}
-                  className="pl-9"
-                />
-              </div>
-            )}
-            {actions && <div>{actions}</div>}
-          </div>
-        </div>
-      )}
+  const totalPages = Math.ceil(filteredData.length / pageSize);
 
-      <div className="w-full overflow-auto">
-        {paginatedData.length > 0 ? (
-          <table className="w-full">
-            <thead className="bg-muted/40 border-b border-border">
-              <tr>
-                {columns.map((column, i) => (
-                  <th key={i} className="h-10 px-4 text-left align-middle font-medium text-muted-foreground">
-                    {column.header}
+  return (
+    <Card className={className}>
+      {showHeader && (
+        <CardHeader className={`flex flex-col md:flex-row md:items-center md:justify-between ${dir === 'rtl' ? 'text-right' : ''}`}>
+          {title && <CardTitle>{t(title)}</CardTitle>}
+          {searchField && (
+            <div className={`relative mt-2 md:mt-0 w-full md:w-64 ${dir === 'rtl' ? 'mr-auto' : 'ml-auto'}`}>
+              <Search className={`absolute ${dir === 'rtl' ? 'right-2' : 'left-2'} top-2.5 h-4 w-4 text-gray-500`} />
+              <Input
+                placeholder={t("Search")}
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setCurrentPage(1); // Reset to first page when searching
+                }}
+                className={`pl-8 ${dir === 'rtl' ? 'pr-8 pl-4' : ''}`}
+              />
+            </div>
+          )}
+        </CardHeader>
+      )}
+      <CardContent>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="bg-gray-50 text-sm text-gray-500 font-medium">
+                {columns.map((column, index) => (
+                  <th
+                    key={index}
+                    onClick={() => column.sortable && handleSort(column.accessor as keyof T)}
+                    className={`
+                      px-4 py-3 text-start border-b 
+                      ${column.sortable ? 'cursor-pointer hover:bg-gray-100' : ''} 
+                      ${dir === 'rtl' ? 'text-right' : 'text-left'}
+                    `}
+                  >
+                    {t(column.header)}
+                    {sortConfig.key === column.accessor && (
+                      <span className="ml-1">
+                        {sortConfig.direction === 'ascending' ? '▲' : '▼'}
+                      </span>
+                    )}
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {paginatedData.map((item, rowIndex) => (
-                <tr 
-                  key={rowIndex} 
-                  className={cn(
-                    "border-b border-border last:border-0 transition-colors hover:bg-muted/30",
-                    rowIndex % 2 === 0 ? "bg-white" : "bg-muted/10"
-                  )}
-                >
-                  {columns.map((column, colIndex) => (
-                    <td key={colIndex} className="p-4 align-middle">
-                      {column.cell
-                        ? column.cell(item)
-                        : getCellValue(item, column.accessor)}
-                    </td>
-                  ))}
+              {paginatedData.length > 0 ? (
+                paginatedData.map((item, rowIndex) => (
+                  <tr
+                    key={rowIndex}
+                    className="hover:bg-gray-50 border-b"
+                  >
+                    {columns.map((column, colIndex) => (
+                      <td 
+                        key={`${rowIndex}-${colIndex}`}
+                        className={`px-4 py-3 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}
+                      >
+                        {getCellValue(item, column)}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={columns.length} className="px-4 py-3 text-center text-gray-500">
+                    {searchQuery ? t("No results found") : t("No data available")}
+                  </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
-        ) : (
-          <div className="flex justify-center items-center p-8 text-muted-foreground">
-            {emptyMessage}
+        </div>
+        
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className={`flex justify-between items-center mt-4 ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}>
+            <div>
+              <span className="text-sm text-gray-500">
+                {t("Showing")} {Math.min((currentPage - 1) * pageSize + 1, filteredData.length)} {t("to")} {Math.min(currentPage * pageSize, filteredData.length)} {t("of")} {filteredData.length} {t("entries")}
+              </span>
+            </div>
+            <div className="flex space-x-1">
+              <button
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="px-2 py-1 rounded border text-sm disabled:opacity-50"
+              >
+                {t("Previous")}
+              </button>
+              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                // Logic to show 5 pages around current page
+                let pageNum = currentPage;
+                if (currentPage <= 3) {
+                  pageNum = i + 1;
+                } else if (currentPage >= totalPages - 2) {
+                  pageNum = totalPages - 4 + i;
+                } else {
+                  pageNum = currentPage - 2 + i;
+                }
+                
+                if (pageNum > 0 && pageNum <= totalPages) {
+                  return (
+                    <button
+                      key={i}
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`px-2 py-1 rounded border text-sm ${
+                        currentPage === pageNum ? 'bg-primary text-white' : ''
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  );
+                }
+                return null;
+              })}
+              <button
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                className="px-2 py-1 rounded border text-sm disabled:opacity-50"
+              >
+                {t("Next")}
+              </button>
+            </div>
           </div>
         )}
-      </div>
-
-      {totalPages > 1 && (
-        <div className="flex justify-between items-center px-4 py-3 border-t border-border bg-muted/20">
-          <div className="text-sm text-muted-foreground">
-            Showing {startIndex + 1} to {Math.min(startIndex + itemsPerPage, filteredData.length)} of {filteredData.length} entries
-          </div>
-          
-          <div className="flex space-x-1">
-            <Button
-              variant="outline"
-              size="sm"
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage(currentPage - 1)}
-            >
-              Previous
-            </Button>
-            
-            {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
-              // Show first page, last page, current page, and pages adjacent to current
-              let pagesToShow = [];
-              if (totalPages <= 5) {
-                pagesToShow = Array.from({ length: totalPages }, (_, i) => i + 1);
-              } else if (currentPage <= 3) {
-                pagesToShow = [1, 2, 3, 4, totalPages];
-              } else if (currentPage >= totalPages - 2) {
-                pagesToShow = [1, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
-              } else {
-                pagesToShow = [1, currentPage - 1, currentPage, currentPage + 1, totalPages];
-              }
-              
-              const page = pagesToShow[i];
-              return (
-                <Button
-                  key={page}
-                  variant={page === currentPage ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setCurrentPage(page)}
-                  className={page === currentPage ? "bg-primary text-primary-foreground" : ""}
-                >
-                  {page}
-                </Button>
-              );
-            })}
-            
-            <Button
-              variant="outline"
-              size="sm"
-              disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage(currentPage + 1)}
-            >
-              Next
-            </Button>
-          </div>
-        </div>
-      )}
+      </CardContent>
     </Card>
   );
 }

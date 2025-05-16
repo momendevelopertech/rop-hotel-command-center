@@ -7,6 +7,9 @@ import { useData } from '@/contexts/DataContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useRopDataService } from '@/utils/ropDataService';
 import { PageHeader } from '@/components/shared/PageHeader';
+import { StatusBadge } from '@/components/shared/StatusBadge';
+import { SubPageNavigation } from '@/components/shared/SubPageNavigation';
+import { StyledAddButton } from '@/components/shared/StyledAddButton';
 
 // Define the column type for the DataTable
 type Column<T> = {
@@ -24,6 +27,15 @@ const GuestManagement = () => {
   const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
   const [translatedBookings, setTranslatedBookings] = useState<Booking[]>([]);
 
+  // Sub-page links for navigation
+  const subPageLinks = [
+    { title: "Room Booking", href: "room-booking", description: "Manage room reservations for officers" },
+    { title: "Check-in / Check-out", href: "check-in-out", description: "Process guest arrivals and departures" },
+    { title: "Guest Services", href: "guest-services", description: "Manage guest services and requests" },
+    { title: "Maintenance Requests", href: "maintenance-requests", description: "Track and assign maintenance tasks" },
+    { title: "Billing & Payments", href: "billing-payments", description: "Process payment transactions" },
+  ];
+
   // Translate bookings whenever language changes
   useEffect(() => {
     const translated = originalBookings.map(booking => translateBooking(booking));
@@ -32,47 +44,25 @@ const GuestManagement = () => {
 
   // Define columns with proper typing for the DataTable
   const columns: Column<Booking>[] = [
+    { header: "ID", accessor: "id" },
+    { header: "Name", accessor: "name" },
+    { header: "Rank", accessor: "rank" },
+    { header: "Room", accessor: "room" },
+    { header: "Check In", accessor: "checkIn" },
+    { header: "Check Out", accessor: "checkOut" },
     { 
-      header: t('ID'), 
-      accessor: 'id' as keyof Booking 
+      header: "Status", 
+      accessor: "status",
+      cell: (booking: Booking) => <StatusBadge status={booking.status} />
     },
     { 
-      header: t('Name'), 
-      accessor: 'name' as keyof Booking 
-    },
-    { 
-      header: t('Rank'), 
-      accessor: 'rank' as keyof Booking 
-    },
-    { 
-      header: t('Room'), 
-      accessor: 'room' as keyof Booking 
-    },
-    { 
-      header: t('Check In'), 
-      accessor: 'checkIn' as keyof Booking 
-    },
-    { 
-      header: t('Check Out'), 
-      accessor: 'checkOut' as keyof Booking 
-    },
-    { 
-      header: t('Status'), 
-      accessor: 'status' as keyof Booking,
-      cell: (booking: Booking) => (
-        <span className={`badge ${booking.status === t('Confirmed') ? 'badge-success' : (booking.status === t('Checked In') ? 'badge-primary' : 'badge-warning')}`}>
-          {booking.status}
-        </span>
-      ) 
-    },
-    { 
-      header: t('Actions'), 
+      header: "Actions", 
       accessor: (booking: Booking) => booking.id,
       cell: (booking: Booking) => (
         <div className="space-x-2">
-          <button className="btn btn-sm btn-primary">{t('View')}</button>
-          <button className="btn btn-sm btn-secondary">{t('Edit')}</button>
-          <button className="btn btn-sm btn-danger">{t('Delete')}</button>
+          <button className="px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200">{t("View")}</button>
+          <button className="px-2 py-1 text-xs bg-green-100 text-green-700 rounded hover:bg-green-200">{t("Edit")}</button>
+          <button className="px-2 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200">{t("Delete")}</button>
         </div>
       ) 
     }
@@ -96,16 +86,6 @@ const GuestManagement = () => {
     }
   };
 
-  const handleSaveBooking = (booking: Booking) => {
-    if (modalMode === 'add') {
-      const newId = Math.max(...originalBookings.map(b => b.id), 0) + 1;
-      setBookings([...originalBookings, { ...booking, id: newId }]);
-    } else {
-      setBookings(originalBookings.map(b => b.id === booking.id ? booking : b));
-    }
-    setIsModalOpen(false);
-  };
-
   return (
     <AppLayout>
       <PageHeader
@@ -113,8 +93,11 @@ const GuestManagement = () => {
         subtitle={t("Military personnel currently accommodated")}
       />
 
+      {/* Sub-page navigation */}
+      <SubPageNavigation links={subPageLinks} baseUrl="/guest-management" />
+
       <div className="mb-4 flex justify-end">
-        <button className="btn btn-primary">{t('Add New Booking')}</button>
+        <StyledAddButton label="Add New Booking" />
       </div>
       
       <DataTable 
@@ -123,8 +106,6 @@ const GuestManagement = () => {
         title={t("Guest Bookings")}
         searchField="name"
       />
-      
-      {/* Modal and other components would go here */}
     </AppLayout>
   );
 };
