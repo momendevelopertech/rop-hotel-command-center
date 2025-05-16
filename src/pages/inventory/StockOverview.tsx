@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { SubPageLayout } from "@/components/shared/SubPageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DataTable } from "@/components/shared/DataTable";
+import { DataTable, Column } from "@/components/shared/DataTable";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { StatusBadge } from "@/components/shared/StatusBadge";
 import { Button } from "@/components/ui/button";
@@ -173,7 +173,7 @@ export default function StockOverview() {
   });
 
   // Define columns for the inventory table
-  const columns = [
+  const columns: Column<InventoryItem>[] = [
     { header: "ID", accessor: "id" },
     { header: "Item Name", accessor: "name" },
     { header: "Category", accessor: "category" },

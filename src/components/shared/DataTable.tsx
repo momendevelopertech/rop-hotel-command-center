@@ -6,13 +6,13 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 // Define a more flexible Column type that accepts either a string key or a function accessor
-export interface Column<T> {
+export interface Column<T extends object> {
   header: string;
   accessor: keyof T | ((item: T) => any);
   cell?: (item: T) => React.ReactNode;
 }
 
-interface DataTableProps<T> {
+interface DataTableProps<T extends object> {
   data: T[];
   columns: Column<T>[];
   className?: string;
@@ -23,7 +23,7 @@ interface DataTableProps<T> {
   showHeader?: boolean;
 }
 
-export function DataTable<T>({ 
+export function DataTable<T extends object>({ 
   data, 
   columns, 
   className, 

@@ -1,11 +1,19 @@
 
 import React, { useEffect, useState } from "react";
 import { useData } from "@/contexts/DataContext";
-import { DataTable } from "@/components/shared/DataTable";
+import { DataTable, Column } from "@/components/shared/DataTable";
 import { Button } from "@/components/ui/button";
 import { Eye, Smartphone } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useRopDataService } from "@/utils/ropDataService";
+
+interface MobileInteraction {
+  id: number | string;
+  officer: string;
+  action: string;
+  timestamp: string;
+  device: string;
+}
 
 interface MobileInteractionsTableProps {
   onSelectScreen: (screen: string) => void;
@@ -21,7 +29,7 @@ export function MobileInteractionsTable({ onSelectScreen }: MobileInteractionsTa
     setTranslatedInteractions(originalInteractions.map(interaction => translateMobileInteraction(interaction)));
   }, [originalInteractions, translateMobileInteraction]);
 
-  const columns = [
+  const columns: Column<MobileInteraction>[] = [
     { 
       header: t("Officer"), 
       accessor: "officer" 
@@ -41,7 +49,7 @@ export function MobileInteractionsTable({ onSelectScreen }: MobileInteractionsTa
     { 
       header: t("Preview"), 
       accessor: "action",
-      cell: (item: any) => {
+      cell: (item: MobileInteraction) => {
         // Match action type to appropriate screen name
         const getScreenName = (action: string) => {
           if (action.includes("book") || action.includes("room")) return "rooms";

@@ -1,14 +1,23 @@
 
 import React from "react";
 import { useData } from "@/contexts/DataContext";
-import { DataTable } from "@/components/shared/DataTable";
+import { DataTable, Column } from "@/components/shared/DataTable";
 import { Button } from "@/components/ui/button";
 import { Plus, Eye, FileEdit, Trash2 } from "lucide-react";
+
+interface InventoryItem {
+  id: number | string;
+  name: string;
+  quantity: number;
+  supplier: string;
+  category: string;
+  reorderLevel: number;
+}
 
 export function InventoryTable() {
   const { inventoryItems } = useData();
 
-  const columns = [
+  const columns: Column<InventoryItem>[] = [
     { 
       header: "اسم المنتج", 
       accessor: "name" 
@@ -27,14 +36,14 @@ export function InventoryTable() {
     },
     { 
       header: "الحالة", 
-      accessor: (item: any) => {
+      accessor: (item: InventoryItem) => {
         return item.quantity > item.reorderLevel 
           ? "كافية" 
           : item.quantity === 0 
             ? "نفدت" 
             : "منخفضة";
       },
-      cell: (item: any) => {
+      cell: (item: InventoryItem) => {
         const status = item.quantity > item.reorderLevel 
           ? "كافية" 
           : item.quantity === 0 
