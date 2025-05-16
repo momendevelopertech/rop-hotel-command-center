@@ -13,15 +13,20 @@ export default function DiningCatering() {
   const { diningOrders } = useData();
   
   // Transform diningOrders to match DiningOrdersTable expected format
-  const formattedOrders = diningOrders.map((order) => ({
-    id: order.id,
-    tableNumber: `Table ${order.id % 20 + 1}`,
-    server: order.name,
-    items: Math.floor(Math.random() * 5) + 1,
-    total: (Math.random() * 25 + 5).toFixed(2) * 1,
-    time: order.timestamp,
-    status: order.status
-  }));
+  const formattedOrders = diningOrders.map((order) => {
+    // Convert order.id to number to ensure it can be used in arithmetic operations
+    const orderId = Number(order.id);
+    
+    return {
+      id: orderId,
+      tableNumber: `Table ${orderId % 20 + 1}`,
+      server: order.name,
+      items: Math.floor(Math.random() * 5) + 1,
+      total: (Math.random() * 25 + 5).toFixed(2) * 1,
+      time: order.timestamp,
+      status: order.status
+    };
+  });
   
   return (
     <AppLayout>
