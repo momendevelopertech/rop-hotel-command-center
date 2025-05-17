@@ -411,7 +411,10 @@ export default function LowStockAlerts() {
     },
     {
       header: t("Lead Time"),
-      accessor: (item) => t("{{days}} days", { days: item.leadTime })
+      accessor: (item) => {
+        // Fix: Use the object parameter format for translation with variables
+        return t("{{days}} days", { days: item.leadTime });
+      }
     },
     {
       header: t("Actions"),
