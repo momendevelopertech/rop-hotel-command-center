@@ -389,7 +389,7 @@ export default function InventoryConsumption() {
                     <SelectValue placeholder={t("All Departments")} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">{t("All Departments")}</SelectItem>
+                    <SelectItem value="all">{t("All Departments")}</SelectItem>
                     {departments.map((dept) => (
                       <SelectItem key={dept} value={dept}>
                         {language === "ar" ? translateDepartment(dept) : dept}
