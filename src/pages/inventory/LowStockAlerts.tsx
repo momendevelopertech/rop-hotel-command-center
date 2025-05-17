@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { SubPageLayout } from "@/components/shared/SubPageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -357,27 +358,27 @@ export default function LowStockAlerts() {
   // Table columns
   const columns: Column<InventoryItem>[] = [
     {
-      header: "SKU",
+      header: t("SKU"),
       accessor: "sku"
     },
     {
-      header: "Item",
+      header: t("Item"),
       accessor: (item) => getLocalizedItem(item)
     },
     {
-      header: "Category",
+      header: t("Category"),
       accessor: (item) => getLocalizedCategory(item)
     },
     {
-      header: "Current Qty",
+      header: t("Current Qty"),
       accessor: (item) => `${item.currentQty} ${getLocalizedUnit(item)}`
     },
     {
-      header: "Reorder Level",
+      header: t("Reorder Level"),
       accessor: (item) => `${item.reorderLevel} ${getLocalizedUnit(item)}`
     },
     {
-      header: "Stock Level",
+      header: t("Stock Level"),
       accessor: (item) => `${calculateStockPercentage(item.currentQty, item.reorderLevel)}%`,
       cell: (item) => {
         const percentage = calculateStockPercentage(item.currentQty, item.reorderLevel);
@@ -389,14 +390,14 @@ export default function LowStockAlerts() {
             </div>
             <Progress
               value={percentage}
-              className={`h-2 ${getProgressColor(percentage)}`}
+              className={getProgressColor(percentage)}
             />
           </div>
         );
       }
     },
     {
-      header: "Status",
+      header: t("Status"),
       accessor: (item) => getLocalizedStatus(item),
       cell: (item) => (
         <Badge className={getStatusColor(getLocalizedStatus(item))}>
@@ -405,15 +406,15 @@ export default function LowStockAlerts() {
       )
     },
     {
-      header: "Supplier",
+      header: t("Supplier"),
       accessor: (item) => getLocalizedSupplier(item)
     },
     {
-      header: "Lead Time",
+      header: t("Lead Time"),
       accessor: (item) => t("{{days}} days", { days: item.leadTime })
     },
     {
-      header: "Actions",
+      header: t("Actions"),
       accessor: (item) => item.id,
       cell: (item) => (
         <div className="flex space-x-2">
