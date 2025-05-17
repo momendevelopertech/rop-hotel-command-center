@@ -345,10 +345,7 @@ export const translations = {
     "ID": "ID",
     "Category Name": "Category Name",
     "Description": "Description",
-    "Items": "Items",
     "Order": "Order",
-    "Status": "Status",
-    "Actions": "Actions",
     "Active": "Active",
     "Inactive": "Inactive",
     "Edit": "Edit",
@@ -360,6 +357,7 @@ export const translations = {
     "Active Categories": "Active Categories",
     "Popular Items": "Popular Items",
     "Military Special Items": "Military Special Items",
+
     // Table Reservations
     "Table Reservations": "Table Reservations",
     "Manage dining area bookings and reservations": "Manage dining area bookings and reservations",
@@ -375,7 +373,6 @@ export const translations = {
     "Guest": "Guest",
     "Table #": "Table #", 
     "Party Size": "Party Size",
-    "Time": "Time",
     "Special Request": "Special Request",
     "None": "None",
     "Seated": "Seated",
@@ -417,10 +414,7 @@ export const translations = {
     "ID": "المعرف",
     "Category Name": "اسم الفئة",
     "Description": "الوصف",
-    "Items": "العناصر",
     "Order": "الترتيب",
-    "Status": "الحالة",
-    "Actions": "الإجراءات",
     "Active": "نشط",
     "Inactive": "غير نشط",
     "Edit": "تعديل",
@@ -432,6 +426,7 @@ export const translations = {
     "Active Categories": "الفئات النشطة",
     "Popular Items": "العناصر الشائعة",
     "Military Special Items": "عناصر خاصة بالعسكريين",
+    
     // Table Reservations
     "Table Reservations": "حجوزات الطاولات",
     "Manage dining area bookings and reservations": "إدارة حجوزات منطقة تناول الطعام",
@@ -447,7 +442,6 @@ export const translations = {
     "Guest": "الضيف",
     "Table #": "رقم الطاولة", 
     "Party Size": "عدد الأشخاص",
-    "Time": "الوقت",
     "Special Request": "طلب خاص",
     "None": "لا يوجد",
     "Seated": "جالس",
