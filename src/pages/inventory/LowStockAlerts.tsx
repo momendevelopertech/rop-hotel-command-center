@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { SubPageLayout } from "@/components/shared/SubPageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -412,7 +411,7 @@ export default function LowStockAlerts() {
     {
       header: t("Lead Time"),
       accessor: (item) => {
-        // Fix: Use the object parameter format for translation with variables
+        // Use the enhanced translation function with parameters
         return t("{{days}} days", { days: item.leadTime });
       }
     },

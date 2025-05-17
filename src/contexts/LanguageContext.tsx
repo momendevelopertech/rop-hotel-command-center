@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState } from "react";
 import { translations, translationKeys } from "@/utils/translations";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
@@ -5,7 +6,7 @@ import { useLocalStorage } from "@/hooks/useLocalStorage";
 interface LanguageContextType {
   language: "en" | "ar";
   setLanguage: React.Dispatch<React.SetStateAction<"en" | "ar">>;
-  t: (key: string) => string;
+  t: (key: string, params?: Record<string, string | number>) => string;
   translate: (key: string, category?: string) => string;
   dir: "ltr" | "rtl";
 }
@@ -17,16 +18,26 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
   
   const dir = language === "ar" ? "rtl" : "ltr";
   
-  // Simple translation function
-  const t = (key: string): string => {
+  // Translation function that can handle parameters
+  const t = (key: string, params?: Record<string, string | number>): string => {
     if (!key) return "";
     
     // Get translated string from translations object
-    const translated = translations[language][key];
+    let translated = translations[language][key];
     
     // If translation exists, return it, otherwise return the original key
     if (translated) {
-      return typeof translated === 'string' ? translated : key;
+      if (typeof translated === 'string') {
+        // If we have parameters, replace placeholders with their values
+        if (params) {
+          Object.entries(params).forEach(([paramKey, paramValue]) => {
+            const placeholder = `{{${paramKey}}}`;
+            translated = translated.replace(placeholder, String(paramValue));
+          });
+        }
+        return translated;
+      }
+      return key;
     }
     
     return key;
