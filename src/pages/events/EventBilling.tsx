@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { SubPageLayout } from "@/components/shared/SubPageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,7 +26,7 @@ import {
   CreditCard,
   Printer,
   Mail,
-  Party,
+  PartyPopper,
   Users
 } from "lucide-react";
 import { format } from "date-fns";
