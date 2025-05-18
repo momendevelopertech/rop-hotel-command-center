@@ -1,11 +1,21 @@
-
-import React from "react";
+import React, { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Edit, Trash2, Star } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useToast } from "@/components/ui/use-toast";
+
+interface MenuItemsProps {
+  searchQuery?: string;
+  filters?: {
+    showPopular: boolean;
+    showMilitary: boolean;
+    showActive: boolean;
+    showInactive: boolean;
+  };
+}
 
 // Menu items with translations
 const menuItems = [
@@ -20,7 +30,8 @@ const menuItems = [
     price: "85",
     image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
     popular: true,
-    military: true
+    military: true,
+    active: true
   },
   {
     id: 2,
@@ -115,8 +126,45 @@ const menuItems = [
   }
 ];
 
-export function MenuItems() {
+export function MenuItems({ searchQuery = "", filters = { showPopular: false, showMilitary: false, showActive: true, showInactive: false } }: MenuItemsProps) {
   const { t, language } = useLanguage();
+  const { toast } = useToast();
+  
+  const filteredItems = useMemo(() => {
+    return menuItems.filter(item => {
+      const matchesSearch = searchQuery 
+        ? (language === "ar" 
+            ? item.nameAr.toLowerCase().includes(searchQuery.toLowerCase())
+            : item.nameEn.toLowerCase().includes(searchQuery.toLowerCase())) 
+        : true;
+      
+      // Status filter
+      const statusMatch = (item.active && filters.showActive) || 
+                         (!item.active && filters.showInactive);
+      
+      // Special filters
+      const specialMatch = (filters.showPopular && item.popular) || 
+                          (filters.showMilitary && item.military) || 
+                          (!filters.showPopular && !filters.showMilitary);
+      
+      return matchesSearch && statusMatch && specialMatch;
+    });
+  }, [searchQuery, filters, language]);
+  
+  const handleEdit = (id: number) => {
+    toast({
+      title: t("Edit Menu Item"),
+      description: `${t("Editing item")} #${id}`,
+    });
+  };
+  
+  const handleDelete = (id: number) => {
+    toast({
+      title: t("Delete Menu Item"),
+      description: `${t("Item")} #${id} ${t("has been deleted")}`,
+      variant: "destructive",
+    });
+  };
   
   return (
     <Card>
@@ -124,60 +172,81 @@ export function MenuItems() {
         <CardTitle>{t("Menu Items")}</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {menuItems.map((item) => (
-            <Card key={item.id} className="overflow-hidden">
-              <div className="w-full h-48 overflow-hidden">
-                <AspectRatio ratio={16 / 9}>
-                  <img 
-                    src={item.image} 
-                    alt={language === "ar" ? item.nameAr : item.nameEn}
-                    className="object-cover w-full h-full"
-                  />
-                </AspectRatio>
-              </div>
-              <CardContent className="pt-4">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="font-semibold text-lg">
-                    {language === "ar" ? item.nameAr : item.nameEn}
-                  </h3>
-                  <span className="font-bold text-blue-600">
-                    {t("{{price}} OMR", { price: item.price })}
-                  </span>
+        {filteredItems.length === 0 ? (
+          <div className="text-center py-10 text-muted-foreground">
+            <p>{t("No menu items found")}</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {filteredItems.map((item) => (
+              <Card key={item.id} className="overflow-hidden">
+                <div className="w-full h-48 overflow-hidden">
+                  <AspectRatio ratio={16 / 9}>
+                    <img 
+                      src={item.image} 
+                      alt={language === "ar" ? item.nameAr : item.nameEn}
+                      className="object-cover w-full h-full"
+                    />
+                  </AspectRatio>
                 </div>
-                <div className="flex flex-wrap gap-2 mb-2">
-                  <Badge variant="outline">
-                    {language === "ar" ? item.category : item.categoryEn}
-                  </Badge>
-                  {item.popular && (
-                    <Badge className="bg-amber-500 flex items-center gap-1">
-                      <Star size={12} />
-                      {t("Popular")}
+                <CardContent className="pt-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-semibold text-lg">
+                      {language === "ar" ? item.nameAr : item.nameEn}
+                    </h3>
+                    <span className="font-bold text-blue-600">
+                      {t("{{price}} OMR", { price: item.price })}
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap gap-2 mb-2">
+                    <Badge variant="outline">
+                      {language === "ar" ? item.category : item.categoryEn}
                     </Badge>
-                  )}
-                  {item.military && (
-                    <Badge className="bg-green-600">
-                      {t("Military Special")}
-                    </Badge>
-                  )}
-                </div>
-                <p className="text-sm text-gray-500 line-clamp-2">
-                  {language === "ar" ? item.descriptionAr : item.descriptionEn}
-                </p>
-                <div className="mt-3 flex justify-end gap-2">
-                  <Button variant="ghost" size="sm" className="h-8 px-2">
-                    <Edit size={16} className="mr-1" />
-                    {t("Edit")}
-                  </Button>
-                  <Button variant="ghost" size="sm" className="h-8 px-2 text-red-500">
-                    <Trash2 size={16} className="mr-1" />
-                    {t("Delete")}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                    {!item.active && (
+                      <Badge variant="secondary">
+                        {t("Inactive")}
+                      </Badge>
+                    )}
+                    {item.popular && (
+                      <Badge className="bg-amber-500 flex items-center gap-1">
+                        <Star size={12} />
+                        {t("Popular")}
+                      </Badge>
+                    )}
+                    {item.military && (
+                      <Badge className="bg-green-600">
+                        {t("Military Special")}
+                      </Badge>
+                    )}
+                  </div>
+                  <p className="text-sm text-gray-500 line-clamp-2">
+                    {language === "ar" ? item.descriptionAr : item.descriptionEn}
+                  </p>
+                  <div className="mt-3 flex justify-end gap-2">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="h-8 px-2"
+                      onClick={() => handleEdit(item.id)}
+                    >
+                      <Edit size={16} className="mr-1" />
+                      {t("Edit")}
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="h-8 px-2 text-red-500"
+                      onClick={() => handleDelete(item.id)}
+                    >
+                      <Trash2 size={16} className="mr-1" />
+                      {t("Delete")}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
       </CardContent>
     </Card>
   );

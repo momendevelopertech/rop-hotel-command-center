@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { SubPageLayout } from "@/components/shared/SubPageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -10,11 +10,48 @@ import { MenuStats } from "@/components/dining/MenuStats";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { StyledAddButton } from "@/components/shared/StyledAddButton";
-import { Search, Filter, ChefHat } from "lucide-react";
+import { Search, Filter, ChefHat, UtensilsCrossed } from "lucide-react";
+import { AddMenuItemModal } from "@/components/dining/AddMenuItemModal";
+import { AddCategoryModal } from "@/components/dining/AddCategoryModal";
+import { 
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+  DropdownMenuSeparator,
+  DropdownMenuLabel
+} from "@/components/ui/dropdown-menu";
 
 export default function MenuManagement() {
   const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState("items");
+  const [menuItemModalOpen, setMenuItemModalOpen] = useState(false);
+  const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+  
+  // Filter states
+  const [filters, setFilters] = useState({
+    showPopular: false,
+    showMilitary: false,
+    showActive: true,
+    showInactive: false,
+  });
+
+  // Handle filter change
+  const handleFilterChange = (key: string) => {
+    setFilters(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
+  
+  const handleAddItem = () => {
+    if (activeTab === "items") {
+      setMenuItemModalOpen(true);
+    } else {
+      setCategoryModalOpen(true);
+    }
+  };
   
   return (
     <SubPageLayout
@@ -39,34 +76,80 @@ export default function MenuManagement() {
         </div>
         
         <div className="flex gap-2">
-          <Button variant="outline" className="gap-2">
-            <Filter size={16} />
-            {t("Filter")}
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="gap-2">
+                <Filter size={16} />
+                {t("Filter")}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel>{t("Filter Options")}</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuCheckboxItem
+                checked={filters.showPopular}
+                onCheckedChange={() => handleFilterChange("showPopular")}
+              >
+                {t("Popular Items")}
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={filters.showMilitary}
+                onCheckedChange={() => handleFilterChange("showMilitary")}
+              >
+                {t("Military Special")}
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuLabel>{t("Status")}</DropdownMenuLabel>
+              <DropdownMenuCheckboxItem
+                checked={filters.showActive}
+                onCheckedChange={() => handleFilterChange("showActive")}
+              >
+                {t("Active")}
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={filters.showInactive}
+                onCheckedChange={() => handleFilterChange("showInactive")}
+              >
+                {t("Inactive")}
+              </DropdownMenuCheckboxItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           
-          <StyledAddButton label={t("Add Menu Item")} />
+          <StyledAddButton 
+            label={activeTab === "items" ? t("Add Menu Item") : t("Add Category")} 
+            onClick={handleAddItem}
+          />
         </div>
       </div>
       
-      <Tabs defaultValue="items" className="w-full">
+      <Tabs 
+        defaultValue="items" 
+        className="w-full"
+        onValueChange={(value) => setActiveTab(value)}
+      >
         <TabsList className="mb-4">
           <TabsTrigger value="items" className="flex items-center gap-2">
-            <ChefHat size={16} />
+            <UtensilsCrossed size={16} />
             {t("Menu Items")}
           </TabsTrigger>
-          <TabsTrigger value="categories">
+          <TabsTrigger value="categories" className="flex items-center gap-2">
+            <ChefHat size={16} />
             {t("Categories")}
           </TabsTrigger>
         </TabsList>
         
         <TabsContent value="items">
-          <MenuItems />
+          <MenuItems searchQuery={searchQuery} filters={filters} />
         </TabsContent>
         
         <TabsContent value="categories">
-          <MenuCategories />
+          <MenuCategories searchQuery={searchQuery} showInactive={filters.showInactive} />
         </TabsContent>
       </Tabs>
+      
+      {/* Modals */}
+      <AddMenuItemModal open={menuItemModalOpen} onOpenChange={setMenuItemModalOpen} />
+      <AddCategoryModal open={categoryModalOpen} onOpenChange={setCategoryModalOpen} />
     </SubPageLayout>
   );
 }
