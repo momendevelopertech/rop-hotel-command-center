@@ -1,9 +1,8 @@
-
 import React, { useState } from "react";
 import { SubPageLayout } from "@/components/shared/SubPageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { DataTable } from "@/components/shared/DataTable";
+import { DataTable, Column } from "@/components/shared/DataTable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { StatusBadge } from "@/components/shared/StatusBadge";
@@ -181,15 +180,15 @@ export default function FinancialAuditLogs() {
   };
   
   // Table columns definition
-  const columns = [
+  const columns: Column<AuditLog>[] = [
     { 
       header: "Date & Time", 
-      accessor: "timestamp",
+      accessor: (log) => log.timestamp,
       cell: (log: AuditLog) => format(new Date(log.timestamp), "MMM dd, yyyy HH:mm:ss")
     },
     { 
       header: "Action", 
-      accessor: "action",
+      accessor: (log) => log.action,
       cell: (log: AuditLog) => (
         <div className="flex items-center">
           <span className={`px-2 py-1 rounded-full text-xs font-medium mr-2 ${getActionBadgeColor(log.type)}`}>
@@ -208,6 +207,7 @@ export default function FinancialAuditLogs() {
     },
     { 
       header: "Actions", 
+      accessor: (log) => log.id,
       cell: (log: AuditLog) => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

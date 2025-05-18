@@ -1,9 +1,8 @@
-
 import React, { useState } from "react";
 import { SubPageLayout } from "@/components/shared/SubPageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { DataTable } from "@/components/shared/DataTable";
+import { DataTable, Column } from "@/components/shared/DataTable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { TaxModal } from "@/components/finance/TaxModal";
@@ -124,7 +123,7 @@ export default function TaxManagement() {
   };
   
   // Table columns definition
-  const columns = [
+  const columns: Column<TaxRate>[] = [
     { header: "Tax ID", accessor: "id" },
     { header: "Name", accessor: "name" },
     { 
@@ -155,7 +154,7 @@ export default function TaxManagement() {
     },
     { 
       header: "Applied To", 
-      accessor: "appliedTo",
+      accessor: (tax) => tax.appliedTo.join(", "),
       cell: (tax: TaxRate) => (
         <div className="flex flex-wrap gap-1">
           {tax.appliedTo.slice(0, 2).map((item, i) => (
@@ -187,6 +186,7 @@ export default function TaxManagement() {
     },
     { 
       header: "Actions", 
+      accessor: (tax) => tax.id,
       cell: (tax: TaxRate) => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

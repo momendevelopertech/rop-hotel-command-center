@@ -1,9 +1,8 @@
-
 import React, { useState } from "react";
 import { SubPageLayout } from "@/components/shared/SubPageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { DataTable } from "@/components/shared/DataTable";
+import { DataTable, Column } from "@/components/shared/DataTable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { StatusBadge } from "@/components/shared/StatusBadge";
@@ -186,10 +185,10 @@ export default function InvoicesPayments() {
   };
   
   // Table columns definition
-  const columns = [
+  const columns: Column<Invoice>[] = [
     { header: "Invoice ID", accessor: "id" },
     { header: "Client", accessor: "client" },
-    { header: "Event", accessor: "event" },
+    { header: "Event", accessor: (invoice) => invoice.event || "" },
     { 
       header: "Total", 
       accessor: "total",
@@ -222,6 +221,7 @@ export default function InvoicesPayments() {
     },
     { 
       header: "Actions", 
+      accessor: (invoice) => invoice.id,
       cell: (invoice: Invoice) => (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
